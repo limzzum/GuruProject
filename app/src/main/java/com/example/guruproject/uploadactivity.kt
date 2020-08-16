@@ -10,7 +10,7 @@ class uploadactivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_uploadactivity)
         upload_button.setOnClickListener {
-            val ToUploadView= Intent(this@uploadactivity,Uploadview::class.java)
+            val ToUploadView= Intent(this@uploadactivity,uploadview::class.java)
             startActivity(ToUploadView)
         }
     }
