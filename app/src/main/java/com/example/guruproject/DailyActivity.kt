@@ -8,69 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.example.guruproject.databinding.ActivityDaliyFragment1Binding
-import kotlinx.android.synthetic.main.activity_daliy_fragment1.*
 
-//class DailyActivity : AppCompatActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_daily)
-//
-//        val pagerAdapter = FragmentPagerAdapter(supportFragmentManager, 3)
-//        view_pager.adapter = pagerAdapter
-//    }
-//}
-//
-////페이지 하나하나가 프라그먼트
-////Fragment1,2,3 파일 사용
-//class FragmentPagerAdapter(
-//    fragmentManager: FragmentManager,
-//    val tabCount: Int
-//) : FragmentStatePagerAdapter(fragmentManager) {
-//
-//    override fun setPrimaryItem(container: View, position: Int, `object`: Any) {
-//        super.setPrimaryItem(container, position, `object`)
-//    }
-//    override fun getItem(position: Int): Fragment {
-//        when (position) {
-//            0 -> {
-//                return DaliyFragment1()
-//            }
-//            1 -> {
-//                return DaliyFragment2()
-//            }
-//            2 -> {
-//                return DaliyFragment3()
-//            }
-//            else -> return DaliyFragment1()
-//        }
-//
-//    }
-//
-//    override fun getCount(): Int {
-//        return tabCount
-//    }
-//}
-
-
-/**
- * The number of pages (wizard steps) to show in this demo.
- */
+/* 페이지 6번 - 날짜별 activity*/
 private const val NUM_PAGES = 3
 
 class DailyActivity : FragmentActivity() {
-
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
     private lateinit var mPager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,10 +63,7 @@ class DailyActivity : FragmentActivity() {
         }
     }
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
+
     private inner class ScreenSlidePagerAdapter(val layoutInflater: LayoutInflater) :
         PagerAdapter() {
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -189,24 +131,4 @@ class DailyActivity : FragmentActivity() {
             return NUM_PAGES
         }
     }
-
-
-//    private inner class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-//        override fun getCount(): Int = NUM_PAGES
-//
-//        override fun getItem(position: Int): Fragment {
-//            when (position) {
-//                0 -> {
-//                    return DaliyFragment1()
-//                }
-//                1 -> {
-//                    return DaliyFragment2()
-//                }
-//                2 -> {
-//                    return DaliyFragment3()
-//                }
-//                else -> return DaliyFragment1()
-//            }
-//        }
-//    }
 }
