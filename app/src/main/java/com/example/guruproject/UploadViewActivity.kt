@@ -8,8 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_upload_view.*
 import java.io.File
-private lateinit var database: DatabaseReference
-database=Firebase.database.reference
+
 
 class Uploadview : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,5 +44,4 @@ class Uploadview : AppCompatActivity() {
 
     }
 
-}
 }
