@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GuruProject</string>
+    <string name="add">추가</string>
+    <string name="ok">확인</string>
 </resources>
