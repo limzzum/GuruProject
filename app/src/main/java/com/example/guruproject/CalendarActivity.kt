@@ -18,7 +18,7 @@ class CalendarActivity : AppCompatActivity() {
             startActivity(intent)
 
         }
-
+//
         //주석 부분 전부 수정 필요! Intent 연결해야함!
 //        tree.setOnClickListener { // 나무 메뉴가 선택되면
             //Intent2 대신 나무메뉴
