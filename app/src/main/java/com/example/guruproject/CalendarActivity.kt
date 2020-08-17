@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_calendar.*
 
+/*5번 화면*/
 class CalendarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,6 +16,8 @@ class CalendarActivity : AppCompatActivity() {
 
             //6번 화면과 연결하는 부분
             val intent = Intent(this@CalendarActivity, DailyActivity::class.java)
+            intent.putExtra("month", month+1)
+            intent.putExtra("date",dayOfMonth)
             startActivity(intent)
 
         }
