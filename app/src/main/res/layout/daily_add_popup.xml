@@ -10,23 +10,28 @@
         android:orientation="horizontal"
         android:weightSum="0"
         android:layout_margin="10dp">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="한 일: "
+            android:layout_gravity="center"
+            android:text="분야: "
             android:textSize="20dp"/>
-        <EditText
-            android:padding="10dp"
+
+        <Spinner
+            android:id="@+id/daily_spinner"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_weight="3"
+            android:padding="10dp"
             />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:orientation="horizontal"
         android:weightSum="0"
         android:layout_margin="10dp">
@@ -35,13 +40,16 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="양: "
+            android:layout_gravity="center"
+            android:text="내용: "
             android:textSize="20dp"/>
         <EditText
-            android:padding="10dp"
+            android:id="@+id/daily_pop_content"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
+            android:layout_gravity="center"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
             />
     </LinearLayout>
 

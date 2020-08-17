@@ -5,11 +5,23 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/daily_recy_text"
+        android:layout_width="0dp"
+        android:layout_weight="8"
         android:layout_height="wrap_content"
         android:text="내용 예시"
         android:textSize="20dp"
         android:gravity="center"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"/>
+    <ImageButton
+        android:id="@+id/daily_recy_delete"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:backgroundTint="#FF5722"
+        android:layout_gravity="center"
         android:layout_margin="10dp"/>
+
 
 </LinearLayout>
