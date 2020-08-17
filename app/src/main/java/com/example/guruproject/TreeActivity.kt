@@ -140,7 +140,7 @@ class TreeActivity : AppCompatActivity() {
             data.clear()
             data.add(Mission("수질 : 텀블러 사용하기"))
             data.add(Mission("토양 : 분리수거 하기"))
-            data.add(Mission("대기 : "))
+            data.add(Mission("대기 : 자전거 이용하기"))
         } else if (date == 3) {
             data.clear()
             data.add(Mission("수질 : "))
