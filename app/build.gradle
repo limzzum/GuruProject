@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -25,6 +26,9 @@ android {
     viewBinding {
         enabled = true
     }
+    kotlinOptions{
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -39,4 +43,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     implementation 'com.android.support:recyclerview-v7:29.0.0'
+    implementation "androidx.fragment:fragment-ktx:1.2.2"
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.5.0'
 }
