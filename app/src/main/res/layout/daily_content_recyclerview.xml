@@ -7,7 +7,17 @@
     <TextView
         android:id="@+id/daily_recy_text"
         android:layout_width="0dp"
-        android:layout_weight="8"
+        android:layout_weight="3"
+        android:layout_height="wrap_content"
+        android:text="내용 예시"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/daily_recy_content"
+        android:layout_width="0dp"
+        android:layout_weight="7"
         android:layout_height="wrap_content"
         android:text="내용 예시"
         android:textSize="20dp"

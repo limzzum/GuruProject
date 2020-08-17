@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -18,24 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.daily_add_popup.*
-import java.util.ArrayList
 
 
 /* 페이지 6번 - 날짜별 activity*/
 private const val NUM_PAGES = 3
-//private var data: ArrayList<Todo> = ArrayList(0)
 
 class DailyActivity : AppCompatActivity() {
     private lateinit var mPager: ViewPager
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: RecyclerView.LayoutManager
     private val viewModel: DailyViewModel by viewModels()
-    private var diolgcategory :String = ""
-    private var diolgcontent : String = ""
-    private var month:Int = 0;
-    private var date:Int = 0;
+    private var diolgcategory: String = ""
+    private var diolgcontent: String = ""
+    private var month: Int = 0;
+    private var date: Int = 0;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +46,13 @@ class DailyActivity : AppCompatActivity() {
         mPager.adapter = pagerAdapter
         mPager.setCurrentItem(1, true)
     }
+
     override fun onBackPressed() {
         super.onBackPressed()
     }
 
     //팝업
-    private fun showSettingPopup() {
+    private fun showSettingPopup(pagemonth: Int, pagedate: Int) {
         val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.daily_add_popup, null)
         val spinner: Spinner = view.findViewById(R.id.daily_spinner)
@@ -72,21 +66,27 @@ class DailyActivity : AppCompatActivity() {
             spinner.adapter = adapter
         }
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                when(position) {
-                    0   ->  {
-                        diolgcategory="토지"
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                when (position) {
+                    0 -> {
+                        diolgcategory = "토지"
                     }
-                    1   ->  {
-                        diolgcategory="물"
+                    1 -> {
+                        diolgcategory = "물"
                     }
-                    2   ->  {
-                        diolgcategory="공기"
+                    2 -> {
+                        diolgcategory = "공기"
                     }
                     else -> {
                     }
                 }
             }
+
             override fun onNothingSelected(parent: AdapterView<*>) {
             }
         }
@@ -95,9 +95,9 @@ class DailyActivity : AppCompatActivity() {
             .setPositiveButton(resources.getString(R.string.save)) { dialog, which ->
                 //Toast.makeText(applicationContext, "저장되었습니다", Toast.LENGTH_LONG)
                 diolgcontent = daily_pop_content.text.toString()
-                viewModel.addTodo(Todo(month,date,diolgcategory,diolgcontent))
-                Log.d("daily", diolgcategory)
-                Log.d("daily", diolgcontent)
+                viewModel.addTodo(Todo(pagemonth, pagedate, diolgcategory, diolgcontent))
+                Log.d("daily", "pop " + pagemonth)
+                Log.d("daily", "pop " + pagedate)
             }
             .setNeutralButton(resources.getString(R.string.cancel), null)
             .create()
@@ -109,34 +109,39 @@ class DailyActivity : AppCompatActivity() {
     // pager adapter
     private inner class ScreenSlidePagerAdapter(
         val layoutInflater: LayoutInflater
-        , var month: Int, var date: Int
+        , var curmonth: Int, var curdate: Int
     ) :
         PagerAdapter() {
+
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
             when (position) {
                 0 -> {
+                    var pagemonth1 = curmonth
+                    var pagedate1 = curdate
                     val view =
                         layoutInflater.inflate(R.layout.activity_daliy_fragment1, container, false)
                     val textView1 = view.findViewById<TextView>(R.id.daily_date1)
-                    if (date == 1) {
-                        month-=1
-                        if (month % 2 == 0) {
+                    if (curdate == 1) {
+                        pagemonth1 = curmonth - 1
+                        if (curmonth % 2 == 0) {
+                            pagedate1 = 30
                             textView1.setText(
-                                "${month}${resources.getString(R.string.month)} 30${resources.getString(
+                                "${pagemonth1}${resources.getString(R.string.month)} ${pagedate1}${resources.getString(
                                     R.string.date
                                 )}"
                             )
                         } else {
+                            pagedate1 = 31
                             textView1.setText(
-                                "${month}${resources.getString(R.string.month)} 31${resources.getString(
+                                "${pagemonth1}${resources.getString(R.string.month)} ${pagedate1}${resources.getString(
                                     R.string.date
                                 )}"
                             )
                         }
                     } else {
-                        date-=1
+                        pagedate1 = curdate - 1
                         textView1.setText(
-                            "${month}${resources.getString(R.string.month)} ${date}${resources.getString(
+                            "${pagemonth1}${resources.getString(R.string.month)} ${pagedate1}${resources.getString(
                                 R.string.date
                             )}"
                         )
@@ -148,19 +153,28 @@ class DailyActivity : AppCompatActivity() {
                         adapter = DailyAdapter(emptyList(),
                             onClickDeleteIcon = {
                                 viewModel.deleteTodo(it)
-                        }
+                            }
                         )
                     }
                     // 관찰 UI 업데이트
-                    viewModel.todoLivedata.observe(this@DailyActivity, Observer {
-                        (recy1.adapter as DailyAdapter).setData(it)
+                    viewModel.tododata1.observe(this@DailyActivity, Observer {
+                        var curList = ArrayList<Todo>()
+                        Log.d("daily", "" + pagemonth1 + "  /  " + pagedate1)
+                        for (item in it) {
+                            if ((item.month == pagemonth1) and (item.date == pagedate1)) {
+
+                                curList.add(item)
+                                (recy1.adapter as DailyAdapter).setData(curList)
+                            }
+                        }
+                        Log.d("daily", "item" + curList.toString())
                     })
 
                     // button
                     var add_btn1 = view.findViewById<Button>(R.id.daily_add1)
                     var ok_btn1 = view.findViewById<Button>(R.id.daily_ok1)
                     add_btn1.setOnClickListener {
-                        showSettingPopup()
+                        showSettingPopup(pagemonth1, pagedate1)
                     }
                     ok_btn1.setOnClickListener {
                         finish()
@@ -169,18 +183,37 @@ class DailyActivity : AppCompatActivity() {
                     return view
                 }
                 1 -> {
+                    var pagemonth2 = curmonth
+                    var pagedate2 = curdate
                     val view =
                         layoutInflater.inflate(R.layout.activity_daliy_fragment2, container, false)
                     val textView2 = view.findViewById<TextView>(R.id.daily_date2)
                     textView2.setText(
-                        "${month}${resources.getString(R.string.month)} ${date}${resources.getString(
+                        "${pagemonth2}${resources.getString(R.string.month)} ${pagedate2}${resources.getString(
                             R.string.date
                         )}"
                     )
+
+                    // recyclerView
+                    var recy2 = view.findViewById<RecyclerView>(R.id.daily_recycler_view2)
+                    recy2.apply {
+                        layoutManager = LinearLayoutManager(this@DailyActivity)
+                        adapter = DailyAdapter(emptyList(),
+                            onClickDeleteIcon = {
+                                viewModel.deleteTodo(it)
+                            }
+                        )
+                    }
+                    // 관찰 UI 업데이트
+                    viewModel.tododata1.observe(this@DailyActivity, Observer {
+
+                        (recy2.adapter as DailyAdapter).setData(it)
+                    })
+
                     var add_btn2 = view.findViewById<Button>(R.id.daily_add2)
                     var ok_btn2 = view.findViewById<Button>(R.id.daily_ok2)
                     add_btn2.setOnClickListener {
-                        showSettingPopup()
+                        showSettingPopup(pagemonth2, pagedate2)
                     }
                     ok_btn2.setOnClickListener {
                         finish()
@@ -189,47 +222,66 @@ class DailyActivity : AppCompatActivity() {
                     return view
                 }
                 2 -> {
+                    var pagemonth3 = curmonth
+                    var pagedate3 = curdate
                     val view =
                         layoutInflater.inflate(R.layout.activity_daliy_fragment3, container, false)
                     val textView3 = view.findViewById<TextView>(R.id.daily_date3)
-                    if (month % 2 == 0) {
-                        if (date == 31) {
-                            month+=1
+                    if (curmonth % 2 == 0) {
+                        if (curdate == 31) {
+                            pagemonth3 = curmonth + 1
+                            pagedate3 = 1
                             textView3.setText(
-                                "${month}${resources.getString(R.string.month)} 1${resources.getString(
+                                "${pagemonth3}${resources.getString(R.string.month)} ${pagedate3}${resources.getString(
                                     R.string.date
                                 )}"
                             )
                         } else {
-                            date+=1
+                            pagedate3 = curdate + 1
                             textView3.setText(
-                                "${month}${resources.getString(R.string.month)} ${date}${resources.getString(
+                                "${pagemonth3}${resources.getString(R.string.month)} ${pagedate3}${resources.getString(
                                     R.string.date
                                 )}"
                             )
                         }
                     } else {
-                        if (date == 30) {
-                            month+=1
+                        if (curdate == 30) {
+                            pagemonth3 = curmonth + 1
+                            pagedate3 = 1
                             textView3.setText(
-                                "${month}${resources.getString(R.string.month)} 1${resources.getString(
+                                "${pagemonth3}${resources.getString(R.string.month)} ${pagedate3}${resources.getString(
                                     R.string.date
                                 )}"
                             )
                         } else {
-                            date+=1
+                            pagedate3 = curdate + 1
                             textView3.setText(
-                                "${month}${resources.getString(R.string.month)} ${date}${resources.getString(
+                                "${pagemonth3}${resources.getString(R.string.month)} ${pagedate3}${resources.getString(
                                     R.string.date
                                 )}"
                             )
                         }
                     }
 
+                    // recyclerView
+                    var recy3 = view.findViewById<RecyclerView>(R.id.daily_recycler_view3)
+                    recy3.apply {
+                        layoutManager = LinearLayoutManager(this@DailyActivity)
+                        adapter = DailyAdapter(emptyList(),
+                            onClickDeleteIcon = {
+                                viewModel.deleteTodo(it)
+                            }
+                        )
+                    }
+                    // 관찰 UI 업데이트
+                    viewModel.tododata1.observe(this@DailyActivity, Observer {
+                        (recy3.adapter as DailyAdapter).setData(it)
+                    })
+
                     var add_btn3 = view.findViewById<Button>(R.id.daily_add3)
                     var ok_btn3 = view.findViewById<Button>(R.id.daily_ok3)
                     add_btn3.setOnClickListener {
-                        showSettingPopup()
+                        showSettingPopup(pagemonth3, pagedate3)
                     }
                     ok_btn3.setOnClickListener {
                         finish()
@@ -282,8 +334,10 @@ class DailyAdapter(
     override fun onBindViewHolder(holder: DailyViewHolder, position: Int) {
         val todo = myDataset[position]
 
-        val view1 = holder.view.findViewById<TextView>(R.id.daily_recy_text)
-        view1.text = myDataset[position].category
+        val viewtext = holder.view.findViewById<TextView>(R.id.daily_recy_text)
+        val viewcontent = holder.view.findViewById<TextView>(R.id.daily_recy_content)
+        viewtext.text = myDataset[position].category
+        viewcontent.text = myDataset[position].content
         //view.
         val deleteButton = holder.view.findViewById<ImageButton>(R.id.daily_recy_delete)
         deleteButton.setOnClickListener {
@@ -293,26 +347,29 @@ class DailyAdapter(
 
     override fun getItemCount() = myDataset.size
 
-    fun setData(newData: List<Todo>){
-        myDataset=newData
+    fun setData(newData: List<Todo>) {
+        myDataset = newData
         notifyDataSetChanged()
     }
 }
 
 //data관리
 class DailyViewModel : ViewModel() {
-    var todoLivedata = MutableLiveData<List<Todo>>()
+    var tododata1 = MutableLiveData<List<Todo>>()
+
+    //    var tododata2 = MutableLiveData<List<Todo>>()
+//    var tododata3 = MutableLiveData<List<Todo>>()
     private val data = arrayListOf<Todo>()
 
     fun addTodo(todo: Todo) {
         data.add(todo)
-        todoLivedata.value=data
+        tododata1.value = data
         Log.d("daily", data.toString())
     }
 
     fun deleteTodo(todo: Todo) {
         data.remove(todo)
-        todoLivedata.value=data
+        tododata1.value = data
     }
 }
 
