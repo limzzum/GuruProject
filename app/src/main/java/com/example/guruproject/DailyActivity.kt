@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -27,8 +29,6 @@ private const val NUM_PAGES = 3
 class DailyActivity : AppCompatActivity() {
     private lateinit var mPager: ViewPager
     private val viewModel: DailyViewModel by viewModels()
-    private var diolgcategory: String = ""
-    private var diolgcontent: String = ""
     private lateinit var curDay: Day
     private lateinit var yesterDay: Day
     private lateinit var nextDay: Day
@@ -65,7 +65,6 @@ class DailyActivity : AppCompatActivity() {
         mPager.adapter = pagerAdapter
         mPager.setCurrentItem(1, true)
     }
-
     override fun onBackPressed() {
         super.onBackPressed()
     }
@@ -76,6 +75,8 @@ class DailyActivity : AppCompatActivity() {
         val view = inflater.inflate(R.layout.daily_add_popup, null)
         val spinner: Spinner = view.findViewById(R.id.daily_spinner)
         val daily_pop_content = view.findViewById<TextView>(R.id.daily_pop_content)
+        var diolgcategory: String = ""
+        var diolgcontent: String = ""
         ArrayAdapter.createFromResource(
             this,
             R.array.daily_popup_array,
@@ -132,136 +133,22 @@ class DailyActivity : AppCompatActivity() {
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
             when (position) {
                 0 -> {
-                    val view =
-                        layoutInflater.inflate(R.layout.activity_daliy_fragment1, container, false)
-                    val textView1 = view.findViewById<TextView>(R.id.daily_date1)
-                    textView1.setText(
-                        "${yesterDay.month}${resources.getString(R.string.month)} ${yesterDay.date}${resources.getString(
-                            R.string.date
-                        )}"
+                    return pagedraw(
+                        R.layout.activity_daliy_fragment1, container, R.id.daily_date1, yesterDay
+                        , R.id.daily_recycler_view1, R.id.daily_add1, R.id.daily_ok1
                     )
-
-                    // recyclerView
-                    var recy1 = view.findViewById<RecyclerView>(R.id.daily_recycler_view1)
-                    recy1.apply {
-                        layoutManager = LinearLayoutManager(this@DailyActivity)
-                        adapter = DailyAdapter(emptyList(),
-                            onClickDeleteIcon = {
-                                viewModel.deleteTodo(it)
-                            }
-                        )
-                    }
-                    // 관찰 UI 업데이트
-                    viewModel.tododata1.observe(this@DailyActivity, Observer {
-                        var curList = ArrayList<Todo>()
-                        for (item in it) {
-                            if ((item.month == yesterDay.month) and (item.date == yesterDay.date)) {
-
-                                curList.add(item)
-                                (recy1.adapter as DailyAdapter).setData(curList)
-                            }
-                        }
-                    })
-
-                    // button
-                    var add_btn1 = view.findViewById<Button>(R.id.daily_add1)
-                    var ok_btn1 = view.findViewById<Button>(R.id.daily_ok1)
-                    add_btn1.setOnClickListener {
-                        showSettingPopup(yesterDay.year,yesterDay.month, yesterDay.date)
-                    }
-                    ok_btn1.setOnClickListener {
-                        finish()
-                    }
-                    container.addView(view)
-                    return view
                 }
                 1 -> {
-                    val view =
-                        layoutInflater.inflate(R.layout.activity_daliy_fragment2, container, false)
-                    val textView2 = view.findViewById<TextView>(R.id.daily_date2)
-                    textView2.setText(
-                        "${curDay.month}${resources.getString(R.string.month)} ${curDay.date}${resources.getString(
-                            R.string.date
-                        )}"
+                    return pagedraw(
+                        R.layout.activity_daliy_fragment2, container, R.id.daily_date2, curDay
+                        , R.id.daily_recycler_view2, R.id.daily_add2, R.id.daily_ok2
                     )
-
-                    // recyclerView
-                    var recy2 = view.findViewById<RecyclerView>(R.id.daily_recycler_view2)
-                    recy2.apply {
-                        layoutManager = LinearLayoutManager(this@DailyActivity)
-                        adapter = DailyAdapter(emptyList(),
-                            onClickDeleteIcon = {
-                                viewModel.deleteTodo(it)
-                            }
-                        )
-                    }
-                    // 관찰 UI 업데이트
-                    viewModel.tododata1.observe(this@DailyActivity, Observer {
-                        var curList = ArrayList<Todo>()
-                        for (item in it) {
-                            if ((item.month == curDay.month) and (item.date == curDay.date)) {
-
-                                curList.add(item)
-                                (recy2.adapter as DailyAdapter).setData(curList)
-                            }
-                        }
-                    })
-
-                    // button
-                    var add_btn2 = view.findViewById<Button>(R.id.daily_add2)
-                    var ok_btn2 = view.findViewById<Button>(R.id.daily_ok2)
-                    add_btn2.setOnClickListener {
-                        showSettingPopup(curDay.year,curDay.month, curDay.date)
-                    }
-                    ok_btn2.setOnClickListener {
-                        finish()
-                    }
-                    container.addView(view)
-                    return view
                 }
                 2 -> {
-                    val view =
-                        layoutInflater.inflate(R.layout.activity_daliy_fragment3, container, false)
-                    val textView3 = view.findViewById<TextView>(R.id.daily_date3)
-                    textView3.setText(
-                        "${nextDay.month}${resources.getString(R.string.month)} ${nextDay.date}${resources.getString(
-                            R.string.date
-                        )}"
+                    return pagedraw(
+                        R.layout.activity_daliy_fragment3, container, R.id.daily_date3, nextDay
+                        , R.id.daily_recycler_view3, R.id.daily_add3, R.id.daily_ok3
                     )
-
-                    // recyclerView
-                    var recy3 = view.findViewById<RecyclerView>(R.id.daily_recycler_view3)
-                    recy3.apply {
-                        layoutManager = LinearLayoutManager(this@DailyActivity)
-                        adapter = DailyAdapter(emptyList(),
-                            onClickDeleteIcon = {
-                                viewModel.deleteTodo(it)
-                            }
-                        )
-                    }
-                    // 관찰 UI 업데이트
-                    viewModel.tododata1.observe(this@DailyActivity, Observer {
-                        var curList = ArrayList<Todo>()
-                        for (item in it) {
-                            if ((item.month == nextDay.month) and (item.date == nextDay.date)) {
-
-                                curList.add(item)
-                                (recy3.adapter as DailyAdapter).setData(curList)
-                            }
-                        }
-                    })
-
-                    // button
-                    var add_btn3 = view.findViewById<Button>(R.id.daily_add3)
-                    var ok_btn3 = view.findViewById<Button>(R.id.daily_ok3)
-                    add_btn3.setOnClickListener {
-                        showSettingPopup(nextDay.year,nextDay.month, nextDay.date)
-                    }
-                    ok_btn3.setOnClickListener {
-                        finish()
-                    }
-                    container.addView(view)
-                    return view
                 }
                 else -> {
                     val view =
@@ -271,7 +158,6 @@ class DailyActivity : AppCompatActivity() {
                 }
             }
         }
-
         override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
             container.removeView(`object` as View)
         }
@@ -280,6 +166,53 @@ class DailyActivity : AppCompatActivity() {
         }
         override fun getCount(): Int {
             return NUM_PAGES
+        }
+
+        // page에 관한 모든 일
+        fun pagedraw(viewlayout:Int, container:ViewGroup,textId:Int,day: Day
+                     ,recyId:Int, addBtnId:Int,okBtnId:Int): View{
+            val view =
+                layoutInflater.inflate(viewlayout, container, false)
+            val textView = view.findViewById<TextView>(textId)
+            textView.setText(
+                "${day.month}${resources.getString(R.string.month)} ${day.date}${resources.getString(
+                    R.string.date
+                )}"
+            )
+
+            // recyclerView
+            var recy = view.findViewById<RecyclerView>(recyId)
+            recy.apply {
+                layoutManager = LinearLayoutManager(this@DailyActivity)
+                adapter = DailyAdapter(emptyList(),
+                    onClickDeleteIcon = {
+                        viewModel.deleteTodo(it)
+                    }
+                )
+            }
+            // 관찰 UI 업데이트
+            viewModel.tododata1.observe(this@DailyActivity, Observer {
+                var curList = ArrayList<Todo>()
+                for (item in it) {
+                    if ((item.month == day.month) and (item.date == day.date)) {
+
+                        curList.add(item)
+                        (recy.adapter as DailyAdapter).setData(curList)
+                    }
+                }
+            })
+
+            // button
+            var add_btn1 = view.findViewById<Button>(addBtnId)
+            var ok_btn1 = view.findViewById<Button>(okBtnId)
+            add_btn1.setOnClickListener {
+                showSettingPopup(day.year,day.month, day.date)
+            }
+            ok_btn1.setOnClickListener {
+                finish()
+            }
+            container.addView(view)
+            return view
         }
     }
 }
@@ -290,7 +223,6 @@ class DailyAdapter(
     val onClickDeleteIcon: (todo: Todo) -> Unit
 ) :
     RecyclerView.Adapter<DailyAdapter.DailyViewHolder>() {
-
     class DailyViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(
@@ -323,13 +255,35 @@ class DailyAdapter(
 
 //data관리
 class DailyViewModel : ViewModel() {
+    val db = Firebase.firestore
     var tododata1 = MutableLiveData<List<Todo>>()
     private val data = arrayListOf<Todo>()
+
+    init{
+        fetchData()
+    }
+    fun fetchData(){
+        db.collection("daily")
+            .get()
+            .addOnSuccessListener {result->
+                data.clear()
+                for (document in result) {
+                    val todo = Todo(document.data["year"] as Int, document.data["month"] as Int,
+                        document.data["date"] as Int,
+                        document.data["category"] as String, document.data["content"]as String)
+                    data.add(todo)
+                }
+                tododata1.value = data
+                Log.d("daily","db: "+data.toString())
+                Log.d("daily","db: "+tododata1.value)
+            }
+    }
 
     fun addTodo(todo: Todo) {
         data.add(todo)
         tododata1.value = data
         Log.d("daily", "add: "+data.toString())
+        Log.d("daily",""+tododata1.value)
     }
     fun deleteTodo(todo: Todo) {
         data.remove(todo)
@@ -337,4 +291,3 @@ class DailyViewModel : ViewModel() {
         Log.d("daily", "delete: "+data.toString())
     }
 }
-
