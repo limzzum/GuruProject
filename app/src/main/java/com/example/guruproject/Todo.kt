@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-data class Todo(val month:Int, val date:Int,
+data class Todo(val year:Int, val month:Int, val date:Int,
                 val category: String, val content: String)
 
 
@@ -18,3 +18,5 @@ data class Todo(val month:Int, val date:Int,
 //fun deleteTodo(){
 //
 //}
+
+data class Day(val year:Int, val month:Int, val date:Int)

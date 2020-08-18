@@ -16,7 +16,8 @@ class CalendarActivity : AppCompatActivity() {
 
             //6번 화면과 연결하는 부분
             val intent = Intent(this@CalendarActivity, DailyActivity::class.java)
-            intent.putExtra("month", month+1)
+            intent.putExtra("year",year)
+            intent.putExtra("month", month)
             intent.putExtra("date",dayOfMonth)
             startActivity(intent)
 
