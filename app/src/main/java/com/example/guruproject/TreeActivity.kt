@@ -1,5 +1,6 @@
 package com.example.guruproject
 
+
 import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
@@ -14,19 +15,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide.init
-import com.example.guruproject.R
-import com.example.guruproject.databinding.ActivityMainBinding
 import com.example.guruproject.databinding.ActivityTreeBinding
 import com.example.guruproject.databinding.ItemMissionBinding
+import com.example.guruproject.R
+import com.example.guruproject.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.item_mission.*
 import kotlinx.android.synthetic.main.activity_tree.*
 //import org.mozilla.javascript.tools.jsc.Main
@@ -41,16 +44,15 @@ private var soil_number = 2
 private var water_number = 2
 
 class TreeActivity : AppCompatActivity() {
-
-    private val data = arrayListOf<Mission>()
-
     private lateinit var binding: ActivityTreeBinding
+
+    private val viewModel : TreeViewModel by viewModels()
 
     private var background_num = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        timeMission()
+        viewModel.addMission()
 
         super.onCreate(savedInstanceState)
         binding = ActivityTreeBinding.inflate(layoutInflater)
@@ -62,9 +64,9 @@ class TreeActivity : AppCompatActivity() {
         binding.missionRecyclerview.apply {
             layoutManager = LinearLayoutManager(this@TreeActivity)
             adapter = MissionAdapter(
-                data,
+                emptyList(),
                 onClickItem = {
-                    toggleMission(it)
+                    viewModel.toggleMission(it)
                 })
         }
 
@@ -119,64 +121,11 @@ class TreeActivity : AppCompatActivity() {
                 air_num.text = "X" + air_number.toString()
             }
         }
-    }
 
-    // 미션 성공 실패의 여부를 부여하는 함수
-    private fun toggleMission(mission: Mission) {
-        if (mission.isDone == false) {
-            mission.isDone = !mission.isDone
-            binding.missionRecyclerview.adapter?.notifyDataSetChanged()
-        }
-    }
-
-    private fun timeMission() {
-        val instance = Calendar.getInstance()
-        var date = instance.get(Calendar.DAY_OF_WEEK).toInt()
-        if (date == 1) {
-            data.add(Mission("수질 : 양치컵 사용하기"))
-            data.add(Mission("토양 : 길거리 쓰레기 줍기"))
-            data.add(Mission("대기 : 대중교통 이용하기"))
-        } else if (date == 2) {
-            data.clear()
-            data.add(Mission("수질 : 텀블러 사용하기"))
-            data.add(Mission("토양 : 분리수거 하기"))
-            data.add(Mission("대기 : 자전거 이용하기"))
-        } else if (date == 3) {
-            data.clear()
-            data.add(Mission("수질 : "))
-            data.add(Mission("토양 : "))
-            data.add(Mission("대기 : "))
-        } else if (date == 4) {
-            data.clear()
-            data.add(Mission("수질 : "))
-            data.add(Mission("토양 : "))
-            data.add(Mission("대기 : "))
-        } else if (date == 5) {
-            data.clear()
-            data.add(Mission("수질 : "))
-            data.add(Mission("토양 : "))
-            data.add(Mission("대기 : "))
-        } else if (date == 6) {
-            data.clear()
-            data.add(Mission("수질 : "))
-            data.add(Mission("토양 : "))
-            data.add(Mission("대기 : "))
-        } else if (date == 7) {
-            data.clear()
-            data.add(Mission("수질 : "))
-            data.add(Mission("토양 : "))
-            data.add(Mission("대기 : "))
-        }
-    }
-
-    private fun clickMission(mission: Mission, position: Int) {
-        if (position == 1) {
-            air_number++
-        } else if (position == 2) {
-            soil_number++
-        } else if (position == 3) {
-            water_number++
-        }
+        // 관찰 UI 업데이트
+        viewModel.missionLiveData.observe(this, androidx.lifecycle.Observer {
+            (binding.missionRecyclerview.adapter as MissionAdapter).setData(it)
+        })
     }
 
     // 화면 변경 함수
@@ -197,7 +146,6 @@ class TreeActivity : AppCompatActivity() {
             binding.treeRelativelayout.setBackgroundResource(R.drawable.tree7)
         }
     }
-
 
 }
 
@@ -224,6 +172,10 @@ class MissionAdapter(
 
     override fun onBindViewHolder(holder: MissionViewHolder, position: Int) {
         val mission = myDataset[position]
+
+        val listener = View.OnClickListener { it->
+            Toast.makeText(it.context,"Clicked: ${mission.text}",Toast.LENGTH_LONG).show()
+        }
         holder.binding.hideMission.text = mission.text
         if (mission.isDone) {
             holder.binding.hideMission.apply {
@@ -242,4 +194,79 @@ class MissionAdapter(
     }
 
     override fun getItemCount() = myDataset.size
+
+    // 데이터 갱신
+    fun setData(newData:List<Mission>){
+        myDataset = newData
+        notifyDataSetChanged()
+    }
 }
+
+class TreeViewModel : ViewModel(){
+    val missionLiveData = MutableLiveData<List<Mission>>()
+
+    private val data = arrayListOf<Mission>()
+
+    // 미션 성공 실패의 여부를 부여하는 함수
+    fun toggleMission(mission: Mission) {
+        if (mission.isDone == false) {
+            mission.isDone = !mission.isDone
+        }
+        missionLiveData.value = data
+    }
+
+    // 요일에 따라 mission 변경 함수
+    fun addMission() {
+        val instance = Calendar.getInstance()
+        var date = instance.get(Calendar.DAY_OF_WEEK).toInt()
+        var data1 = Mission("")
+        var data2 = Mission("")
+        var data3 = Mission("")
+        if (date == 1) {
+            data1 = Mission("수질 : 양치컵 사용하기")
+            data2 = Mission("토양 : 길거리 쓰레기 줍기")
+            data3 = Mission("대기 : 대중교통 이용하기")
+            data.add(data1)
+            data.add(data2)
+            data.add(data3)
+        } else if (date == 2) {
+            data.clear()
+            data1 = Mission("수질 : 텀블러 사용하기")
+            data2 = Mission("토양 : 분리수거 하기")
+            data3 = Mission("대기 : 자전거 이용하기")
+            data.add(data1)
+            data.add(data2)
+            data.add(data3)
+        } else if (date == 3) {
+            data.clear()
+            data1 = Mission("수질 : 텀블러 사용하기")
+            data2 = Mission("토양 : 분리수거 하기")
+            data3 = Mission("대기 : 자전거 이용하기")
+            data.add(data1)
+            data.add(data2)
+            data.add(data3)
+        } else if (date == 4) {
+            data.clear()
+            data.add(Mission("수질 : "))
+            data.add(Mission("토양 : "))
+            data.add(Mission("대기 : "))
+        } else if (date == 5) {
+            data.clear()
+            data.add(Mission("수질 : "))
+            data.add(Mission("토양 : "))
+            data.add(Mission("대기 : "))
+        } else if (date == 6) {
+            data.clear()
+            data.add(Mission("수질 : "))
+            data.add(Mission("토양 : "))
+            data.add(Mission("대기 : "))
+        } else if (date == 7) {
+            data.clear()
+            data.add(Mission("수질 : "))
+            data.add(Mission("토양 : "))
+            data.add(Mission("대기 : "))
+        }
+        missionLiveData.value = data
+    }
+}
+
