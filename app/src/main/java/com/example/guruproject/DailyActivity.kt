@@ -195,7 +195,6 @@ class DailyActivity : AppCompatActivity() {
                 var curList = ArrayList<Todo>()
                 for (item in it) {
                     if ((item.month == day.month) and (item.date == day.date)) {
-
                         curList.add(item)
                         (recy.adapter as DailyAdapter).setData(curList)
                     }
