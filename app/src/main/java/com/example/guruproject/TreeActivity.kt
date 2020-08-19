@@ -1,64 +1,39 @@
 package com.example.guruproject
 
-
-import android.content.Context
-import android.content.Intent
 import android.graphics.Paint
 import android.graphics.Typeface
-import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide.init
 import com.example.guruproject.databinding.ActivityTreeBinding
 import com.example.guruproject.databinding.ItemMissionBinding
-import com.example.guruproject.R
-import com.example.guruproject.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.item_mission.*
 import kotlinx.android.synthetic.main.activity_tree.*
-//import org.mozilla.javascript.tools.jsc.Main
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
-private var air_number = 2
-private var soil_number = 2
-private var water_number = 2
+private lateinit var binding: ActivityTreeBinding
+data class iconData(var water:Int, var soil:Int, var air:Int, var tree:Int)
+private var icon = iconData(4,4,4,0)
+private var saveicon = iconData(0,0,0,0)
 
 class TreeActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityTreeBinding
-
-    private val viewModel : TreeViewModel by viewModels()
-
+    private val viewModel: TreeViewModel by viewModels()
     private var background_num = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         viewModel.addMission()
-
         super.onCreate(savedInstanceState)
         binding = ActivityTreeBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
 
         // 오늘의 미션 item을 누르면 togglemission함수 불러옴
         binding.missionRecyclerview.apply {
@@ -80,46 +55,48 @@ class TreeActivity : AppCompatActivity() {
         }
 
         // 해, 거름, 물뿌리개, 나무의 개수 표시
-        air_num.setText("X$air_number")
-        soil_num.setText("X$soil_number")
-        water_num.setText("X$water_number")
-        var tree_number = 0
-        tree_num.setText("X$tree_number")
+        air_num.setText("X${icon.air}")
+        soil_num.setText("X${icon.soil}")
+        water_num.setText("X${icon.water}" )
+        tree_num.setText("X${icon.tree}")
 
         // 거름 그림을 클릭했을 때 전체적인 화면이 바뀌고, 거름의 수 -1
         soil_img.setOnClickListener {
-            if (soil_number > 0) {
-                soil_number--
+            if ((icon.soil > 0) and (saveicon.soil!=100)) {
+                icon.soil--
                 background_num++
                 changeBackground()
-                soil_num.text = "X" + soil_number.toString()
-            } else {
-                soil_num.text = "X" + soil_number.toString()
+                saveicon.soil+=25
+                binding.barsoil.setProgress(saveicon.soil)
             }
+            soil_num.text = "X" + icon.soil.toString()
+            viewModel.treeadd(saveicon)
         }
 
         // 물뿌리개 그림을 클릭했을 때 전체적인 화면이 바뀌고, 물뿌리개의 수 -1
         water_img.setOnClickListener {
-            if (water_number > 0) {
-                water_number--
+            if ((icon.water > 0) and (saveicon.water!=100)) {
+                icon.water--
                 background_num++
                 changeBackground()
-                water_num.text = "X" + water_number.toString()
-            } else {
-                water_num.text = "X" + water_number.toString()
+                saveicon.water+=25
+                binding.barwater.setProgress(saveicon.water)
             }
+            water_num.text = "X" + icon.water.toString()
+            viewModel.treeadd(saveicon)
         }
 
         // 해 그림을 클릭했을 때 전체적인 화면이 바뀌고, 해의 개수 -1
         air_img.setOnClickListener {
-            if (air_number > 0) {
-                air_number--
+            if ((icon.air > 0) and (saveicon.air!=100)) {
+                icon.air--
                 background_num++
                 changeBackground()
-                air_num.text = "X" + air_number.toString()
-            } else {
-                air_num.text = "X" + air_number.toString()
+                saveicon.air+=25
+                binding.barair.setProgress(saveicon.air)
             }
+            air_num.text = "X" + icon.air.toString()
+            viewModel.treeadd(saveicon)
         }
 
         // 관찰 UI 업데이트
@@ -144,12 +121,13 @@ class TreeActivity : AppCompatActivity() {
             binding.treeRelativelayout.setBackgroundResource(R.drawable.tree6)
         } else if (background_num == 7) {
             binding.treeRelativelayout.setBackgroundResource(R.drawable.tree7)
+        } else{
+
         }
     }
-
 }
 
-data class Mission(val text: String, var isDone: Boolean = false)
+data class Mission(val category:String, val text: String="", var isDone: Boolean = false)
 
 // adapter 클래스
 class MissionAdapter(
@@ -166,29 +144,29 @@ class MissionAdapter(
     ): MissionAdapter.MissionViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_mission, parent, false)
-
         return MissionViewHolder(ItemMissionBinding.bind(view))
     }
 
     override fun onBindViewHolder(holder: MissionViewHolder, position: Int) {
         val mission = myDataset[position]
-
-        val listener = View.OnClickListener { it->
-            Toast.makeText(it.context,"Clicked: ${mission.text}",Toast.LENGTH_LONG).show()
+        val listener = View.OnClickListener { it ->
+            Toast.makeText(it.context, "Clicked: ${mission.category}", Toast.LENGTH_LONG).show()
         }
-        holder.binding.hideMission.text = mission.text
-        if (mission.isDone) {
-            holder.binding.hideMission.apply {
-                paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                setTypeface(null, Typeface.NORMAL)
-            }
-        } else {
-            holder.binding.hideMission.apply {
-                paintFlags = 0
-                setTypeface(null, Typeface.BOLD)
-            }
-            holder.binding.root.setOnClickListener {
-                onClickItem.invoke(mission)
+        holder.binding.hideMissionCategory.text = mission.category
+        holder.binding.hideMissionText.text = mission.text
+
+        holder.binding.root.setOnClickListener {
+            onClickItem.invoke(mission)
+            if (mission.isDone) {
+                holder.binding.hideMissionText.apply {
+                    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    setTypeface(null, Typeface.NORMAL)
+                }
+            } else {
+                holder.binding.hideMissionText.apply {
+                    paintFlags = 0
+                    setTypeface(null, Typeface.NORMAL)
+                }
             }
         }
     }
@@ -196,23 +174,51 @@ class MissionAdapter(
     override fun getItemCount() = myDataset.size
 
     // 데이터 갱신
-    fun setData(newData:List<Mission>){
+    fun setData(newData: List<Mission>) {
         myDataset = newData
         notifyDataSetChanged()
     }
 }
 
-class TreeViewModel : ViewModel(){
+class TreeViewModel : ViewModel() {
     val missionLiveData = MutableLiveData<List<Mission>>()
-
+    val iconLiveData = MutableLiveData<iconData>()
+    val saveLiveDate= MutableLiveData<iconData>()
     private val data = arrayListOf<Mission>()
 
     // 미션 성공 실패의 여부를 부여하는 함수
     fun toggleMission(mission: Mission) {
-        if (mission.isDone == false) {
-            mission.isDone = !mission.isDone
+        mission.isDone = !mission.isDone
+        Log.d("tree", "water: "+icon.water)
+        Log.d("tree", "mission: "+mission.category+", "+mission.isDone)
+        if (mission.isDone == true) {
+            when (mission.category) {
+                "수질" -> {
+                    binding.waterNum.setText("X${++icon.water}")
+                    Log.d("tree","수질 안으로 들어옴")
+                }
+                "토양" -> {
+                    binding.soilNum.setText("X${++icon.soil}")
+                }
+                "대기" -> {
+                    binding.airNum.setText("X${++icon.air}")
+                }
+            }
+        } else {
+            when (mission.category) {
+                "수질" -> {
+                    binding.waterNum.setText("X${--icon.water}")
+                }
+                "토양" -> {
+                    binding.soilNum.setText("X${--icon.soil}")
+                }
+                "대기" -> {
+                    binding.airNum.setText("X${--icon.air}")
+                }
+            }
         }
-        missionLiveData.value = data
+        Log.d("tree", "water later: "+icon.water)
+        iconLiveData.value = icon
     }
 
     // 요일에 따라 mission 변경 함수
@@ -223,50 +229,76 @@ class TreeViewModel : ViewModel(){
         var data2 = Mission("")
         var data3 = Mission("")
         if (date == 1) {
-            data1 = Mission("수질 : 양치컵 사용하기")
-            data2 = Mission("토양 : 길거리 쓰레기 줍기")
-            data3 = Mission("대기 : 대중교통 이용하기")
+            data1 = Mission("수질","양치컵 사용하기")
+            data2 = Mission("토양", "길거리 쓰레기 줍기")
+            data3 = Mission("대기","대중교통 이용하기")
             data.add(data1)
             data.add(data2)
             data.add(data3)
         } else if (date == 2) {
             data.clear()
-            data1 = Mission("수질 : 텀블러 사용하기")
-            data2 = Mission("토양 : 분리수거 하기")
-            data3 = Mission("대기 : 자전거 이용하기")
+            data1 = Mission("수질","텀블러 사용하기")
+            data2 = Mission("토양","분리수거 하기")
+            data3 = Mission("대기","자전거 이용하기")
             data.add(data1)
             data.add(data2)
             data.add(data3)
         } else if (date == 3) {
             data.clear()
-            data1 = Mission("수질 : 텀블러 사용하기")
-            data2 = Mission("토양 : 분리수거 하기")
-            data3 = Mission("대기 : 자전거 이용하기")
+            data1 = Mission("수질","텀블러 사용하기")
+            data2 = Mission("토양","분리수거 하기")
+            data3 = Mission("대기","자전거 이용하기")
             data.add(data1)
             data.add(data2)
             data.add(data3)
         } else if (date == 4) {
             data.clear()
-            data.add(Mission("수질 : "))
-            data.add(Mission("토양 : "))
-            data.add(Mission("대기 : "))
+            data1 = Mission("수질","양치컵 사용하기")
+            data2 = Mission("토양", "길거리 쓰레기 줍기")
+            data3 = Mission("대기","대중교통 이용하기")
+            data.add(data1)
+            data.add(data2)
+            data.add(data3)
         } else if (date == 5) {
             data.clear()
-            data.add(Mission("수질 : "))
-            data.add(Mission("토양 : "))
-            data.add(Mission("대기 : "))
+            data1 = Mission("수질","텀블러 사용하기")
+            data2 = Mission("토양","분리수거 하기")
+            data3 = Mission("대기","자전거 이용하기")
+            data.add(data1)
+            data.add(data2)
+            data.add(data3)
         } else if (date == 6) {
             data.clear()
-            data.add(Mission("수질 : "))
-            data.add(Mission("토양 : "))
-            data.add(Mission("대기 : "))
+            data1 = Mission("수질","텀블러 사용하기")
+            data2 = Mission("토양","분리수거 하기")
+            data3 = Mission("대기","자전거 이용하기")
+            data.add(data1)
+            data.add(data2)
+            data.add(data3)
         } else if (date == 7) {
             data.clear()
-            data.add(Mission("수질 : "))
-            data.add(Mission("토양 : "))
-            data.add(Mission("대기 : "))
+            data1 = Mission("수질","텀블러 사용하기")
+            data2 = Mission("토양","분리수거 하기")
+            data3 = Mission("대기","자전거 이용하기")
+            data.add(data1)
+            data.add(data2)
+            data.add(data3)
         }
         missionLiveData.value = data
+    }
+
+    fun treeadd(saveicon:iconData){
+        if((saveicon.air==100)and(saveicon.soil==100)and(saveicon.water==100)){
+            binding.treeNum.setText("X${++saveicon.tree}")
+            Log.d("tree","savetree"+saveicon.tree)
+            saveicon.soil=0
+            saveicon.air=0
+            saveicon.water=0
+            binding.barair.setProgress(0)
+            binding.barsoil.setProgress(0)
+            binding.barwater.setProgress(0)
+        }
+        saveLiveDate.value=saveicon
     }
 }
 

@@ -38,6 +38,7 @@
         android:layout_height="80dp"
         android:layout_marginLeft="34dp"
         android:layout_marginTop="72.5dp"
+        android:paddingTop="5dp"
         android:background="#D6D6D6"
         tools:listitem="@layout/item_mission" />
 
@@ -54,7 +55,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="2dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -71,12 +72,21 @@
                 android:layout_marginBottom="2dp"
                 android:textSize="13dp"
                 android:textStyle="bold" />
+
         </LinearLayout>
+        <ProgressBar
+            android:id="@+id/barair"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginBottom="10dp"
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="2dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -94,11 +104,19 @@
                 android:textSize="13dp"
                 android:textStyle="bold" />
         </LinearLayout>
+        <ProgressBar
+            android:id="@+id/barsoil"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginBottom="10dp"
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="2dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -116,6 +134,14 @@
                 android:textSize="13dp"
                 android:textStyle="bold" />
         </LinearLayout>
+        <ProgressBar
+            android:id="@+id/barwater"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginBottom="10dp"
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -138,6 +164,8 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -186,4 +214,5 @@
             android:textSize="20dp" />
 
     </LinearLayout>
+
 </RelativeLayout>
