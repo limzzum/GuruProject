@@ -48,6 +48,9 @@ class LoginActivity : AppCompatActivity() {
                             Log.d(TAG, "signInWithEmail:success")
                             val user = auth.currentUser
                             updateUI(user)
+
+                            val intent = Intent(this@LoginActivity, CalendarActivity::class.java)
+                            startActivity(intent)
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.exception)
@@ -60,9 +63,6 @@ class LoginActivity : AppCompatActivity() {
                     }
             }
 
-
-            val intent = Intent(this@LoginActivity, CalendarActivity::class.java)
-            startActivity(intent)
         }
 
         //신규 회원가입
