@@ -50,7 +50,7 @@
 
         <TextView
             android:id="@+id/textViewFindpassword"
-            android:text="아직 회원이 아니십니까?"
+            android:text="아직 회원이 아니십니까?  "
             android:textColor="#000000"
             android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
