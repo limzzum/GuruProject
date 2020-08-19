@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(baseContext, "로그인이 되었습니다",
                 Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(baseContext, "로그인이 필요합니다",
+            Toast.makeText(baseContext, "일치하는 사용자가 없습니다",
                 Toast.LENGTH_SHORT).show()
         }
         editTextEmail.setText("")
