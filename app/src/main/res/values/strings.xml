@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">GuruProject</string>
+    <string name="add">추가</string>
+    <string name="ok">확인</string>
+    <string name="month">월</string>
+    <string name="date">일</string>
+    <string name="save">저장</string>
+    <string name="cancel">취소</string>
+    <string name="ground">토지</string>
+    <string name="water">물</string>
+    <string name="air">공기</string>
 </resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="daily_popup_array">
+        <item>토지</item>
+        <item>물</item>
+        <item>공기</item>
+    </string-array>
+</resources>
