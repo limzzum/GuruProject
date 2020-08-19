@@ -16,13 +16,13 @@ import com.google.firebase.ktx.Firebase
 import com.google.rpc.context.AttributeContext
 import kotlinx.android.synthetic.main.activity_login.*
 
+lateinit var auth:FirebaseAuth
 class LoginActivity : AppCompatActivity() {
 
     val RC_SIGN_IN = 9001
 
     //private var firebaseAuth: FirebaseAuth? = null
     private val TAG : String = "CreateAccount"
-    private lateinit var auth:FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

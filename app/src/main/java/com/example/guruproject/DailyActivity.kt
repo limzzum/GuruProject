@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -40,21 +41,29 @@ class DailyActivity : AppCompatActivity() {
         // pager
         mPager = findViewById(R.id.view_pager)
         // 날짜 갱신
-        var year: Int=0
-        var month: Int=0
-        var date: Int=0
-        year = intent.getIntExtra("year",0)
+        var year: Int = 0
+        var month: Int = 0
+        var date: Int = 0
+        year = intent.getIntExtra("year", 0)
         month = intent.getIntExtra("month", 0)
         date = intent.getIntExtra("date", 0)
         val calendar: Calendar = Calendar.getInstance()
         calendar.set(year, month, date)
-        curDay=Day(year, month+1,date)
+        curDay = Day(year, month + 1, date)
         calendar.add(Calendar.DATE, -1)
-        yesterDay=Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DATE))
+        yesterDay = Day(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH) + 1,
+            calendar.get(Calendar.DATE)
+        )
         calendar.add(Calendar.DATE, 2)
-        nextDay=Day(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH)+1,calendar.get(Calendar.DATE))
-        Log.d("calender", "yester: "+yesterDay.toString())
-        Log.d("calender", "next: "+nextDay.toString())
+        nextDay = Day(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH) + 1,
+            calendar.get(Calendar.DATE)
+        )
+        Log.d("calender", "yester: " + yesterDay.toString())
+        Log.d("calender", "next: " + nextDay.toString())
 
         val pagerAdapter = ScreenSlidePagerAdapter(
             LayoutInflater.from(this@DailyActivity),
@@ -65,12 +74,13 @@ class DailyActivity : AppCompatActivity() {
         mPager.adapter = pagerAdapter
         mPager.setCurrentItem(1, true)
     }
+
     override fun onBackPressed() {
         super.onBackPressed()
     }
 
     //팝업
-    private fun showSettingPopup(pageyear:Int, pagemonth: Int, pagedate: Int) {
+    private fun showSettingPopup(pageyear: Int, pagemonth: Int, pagedate: Int) {
         val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.daily_add_popup, null)
         val spinner: Spinner = view.findViewById(R.id.daily_spinner)
@@ -114,7 +124,7 @@ class DailyActivity : AppCompatActivity() {
             .setTitle(resources.getString(R.string.add))
             .setPositiveButton(resources.getString(R.string.save)) { dialog, which ->
                 diolgcontent = daily_pop_content.text.toString()
-                viewModel.addTodo(Todo(pageyear,pagemonth, pagedate, diolgcategory, diolgcontent))
+                viewModel.addTodo(Todo(pageyear, pagemonth, pagedate, diolgcategory, diolgcontent))
             }
             .setNeutralButton(resources.getString(R.string.cancel), null)
             .create()
@@ -126,10 +136,9 @@ class DailyActivity : AppCompatActivity() {
     // pager adapter
     private inner class ScreenSlidePagerAdapter(
         val layoutInflater: LayoutInflater
-        , var yesterDay: Day , var curDay: Day, var nextDay: Day
+        , var yesterDay: Day, var curDay: Day, var nextDay: Day
     ) :
         PagerAdapter() {
-
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
             when (position) {
                 0 -> {
@@ -187,18 +196,20 @@ class DailyActivity : AppCompatActivity() {
                 adapter = DailyAdapter(emptyList(),
                     onClickDeleteIcon = {
                         viewModel.deleteTodo(it)
+                        Log.d("daily", it.getString("content"))
                     }
                 )
             }
             // 관찰 UI 업데이트
             viewModel.tododata1.observe(this@DailyActivity, Observer {
-                var curList = ArrayList<Todo>()
+                var curList = ArrayList<DocumentSnapshot>()
                 for (item in it) {
-                    if ((item.month == day.month) and (item.date == day.date)) {
+                    if (((item.getLong("month"))!!.toInt() == day.month) and ((item.getLong("date"))!!.toInt() == day.date)) {
                         curList.add(item)
-                        (recy.adapter as DailyAdapter).setData(curList)
                     }
                 }
+                (recy.adapter as DailyAdapter).setData(curList)
+//                (recy.adapter as DailyAdapter).setData(it)
             })
 
             // button
@@ -218,10 +229,11 @@ class DailyActivity : AppCompatActivity() {
 
 // recyclerView adapter
 class DailyAdapter(
-    private var myDataset: List<Todo>,
-    val onClickDeleteIcon: (todo: Todo) -> Unit
+    private var myDataset: List<DocumentSnapshot>,//List<Todo>
+    val onClickDeleteIcon: (todo: DocumentSnapshot) -> Unit//todo: Todo
 ) :
     RecyclerView.Adapter<DailyAdapter.DailyViewHolder>() {
+
     class DailyViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(
@@ -237,8 +249,9 @@ class DailyAdapter(
         val todo = myDataset[position]
         val viewtext = holder.view.findViewById<TextView>(R.id.daily_recy_text)
         val viewcontent = holder.view.findViewById<TextView>(R.id.daily_recy_content)
-        viewtext.text = myDataset[position].category
-        viewcontent.text = myDataset[position].content
+        viewtext.text = myDataset[position].get("category").toString()
+        viewcontent.text = myDataset[position].get("content").toString()
+
         val deleteButton = holder.view.findViewById<ImageButton>(R.id.daily_recy_delete)
         deleteButton.setOnClickListener {
             onClickDeleteIcon.invoke(todo) //onclickdeletIcon을 실행함
@@ -246,47 +259,96 @@ class DailyAdapter(
     }
 
     override fun getItemCount() = myDataset.size
-    fun setData(newData: List<Todo>) {
+
+//    fun setData(newData: List<Todo>) {
+//        myDataset = newData
+//        notifyDataSetChanged()
+//    }
+    fun setData(newData: List<DocumentSnapshot>) {
         myDataset = newData
-        notifyDataSetChanged()
+        notifyDataSetChanged() // 화면 갱신
     }
 }
 
 //data관리
 class DailyViewModel : ViewModel() {
     val db = Firebase.firestore
-    var tododata1 = MutableLiveData<List<Todo>>()
+    //var tododata1 = MutableLiveData<List<Todo>>()
+    val tododata1 = MutableLiveData<List<DocumentSnapshot>>()
     private val data = arrayListOf<Todo>()
 
-    init{
+    init {
         fetchData()
     }
-    fun fetchData(){
-        db.collection("daily")
-            .get()
-            .addOnSuccessListener {result->
-                data.clear()
-                for (document in result) {
-                    val todo = Todo(document.data["year"] as Int, document.data["month"] as Int,
-                        document.data["date"] as Int,
-                        document.data["category"] as String, document.data["content"]as String)
-                    data.add(todo)
+
+    fun fetchData() {
+//        db.collection("daily")
+//            .get()
+//            .addOnSuccessListener { result ->
+//                data.clear()
+//                for (document in result) {
+//                    val todo = Todo(
+//                        (document.getLong("year"))!!.toInt(), (document.getLong("month"))!!.toInt(),
+//                        (document.getLong("date"))!!.toInt(),
+//                        document.getString("category")?: "", document.getString("content")?: ""
+//                    )
+//                    data.add(todo)
+//                }
+//                //tododata1.value=data
+//                Log.d("daily", "db data: "+data)
+//                Log.d("daily", "db: "+tododata1)
+//                Log.d("daily","db auth: "+auth)
+//            }
+
+//        val user = auth.currentUser
+//        if (user != null) {
+//            db.collection(user.uid)
+//                .addSnapshotListener { value, e ->
+//                    if (e != null) { //에러가 나면
+//                        return@addSnapshotListener
+//                    }
+//                    if (value != null) {
+//                        tododata1.value = value.documents
+//                    }
+//                    Log.d("daily", "db: " + tododata1)
+//                    Log.d("daily", "db auth: " + auth)
+//                }
+//        }
+        val user = auth.currentUser //FirebaseAuth.getInstance()
+        if (user != null) {
+            db.collection(user.uid)
+                .document(user.uid)
+                .collection("todo")
+                .addSnapshotListener { value, e ->
+                    if (e != null) { //에러가 나면
+                        return@addSnapshotListener
+                    }
+                    if (value != null) {
+                        tododata1.value = value.documents
+                    }
+                    Log.d("daily", "db: " + tododata1)
+                    Log.d("daily", "db auth: " + auth)
                 }
-                tododata1.value = data
-                Log.d("daily","db: "+data.toString())
-                Log.d("daily","db: "+tododata1.value)
-            }
+        }
+
     }
 
     fun addTodo(todo: Todo) {
-        data.add(todo)
-        tododata1.value = data
-        Log.d("daily", "add: "+data.toString())
-        Log.d("daily",""+tododata1.value)
+//        data.add(todo)
+//        tododata1.value = data
+        auth.currentUser?.let { user -> //currentUser가 null이 아닐 때 실행
+            db.collection(user.uid).document(user.uid).collection("todo").add(todo)
+        }
+        Log.d("daily", "add: " + data.toString())
+        Log.d("daily", "" + tododata1.value)
     }
-    fun deleteTodo(todo: Todo) {
-        data.remove(todo)
-        tododata1.value = data
-        Log.d("daily", "delete: "+data.toString())
+
+    fun deleteTodo(todo: DocumentSnapshot) {//todo: Todo
+        //data.remove(todo)
+//        tododata1.value = data
+        auth.currentUser?.let { user ->
+            db.collection(user.uid).document(user.uid).collection("todo").document(todo.id).delete()
+        }
+        Log.d("daily", "delete: " + data.toString())
     }
 }
