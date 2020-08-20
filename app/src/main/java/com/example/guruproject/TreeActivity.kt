@@ -85,17 +85,14 @@ class TreeActivity : AppCompatActivity() {
         my_list.setOnClickListener {
             val intent1 = Intent(this@TreeActivity, CalendarActivity::class.java)
             startActivity(intent1)
-            finish()
         }
         upload.setOnClickListener {
-            val intent1 = Intent(this@TreeActivity, RecyclerView::class.java)
+            val intent1 = Intent(this@TreeActivity, com.example.guruproject.RecyclerView::class.java)
             startActivity(intent1)
-            finish()
         }
         user_info.setOnClickListener {
-            val intent1 = Intent(this@TreeActivity, Profiles::class.java)
+            val intent1 = Intent(this@TreeActivity, MainActivity::class.java)
             startActivity(intent1)
-            finish()
         }
 
         // 관찰 UI 업데이트
@@ -120,6 +117,7 @@ class TreeActivity : AppCompatActivity() {
         // 2초내 다시 클릭하면 앱 종료
         if (System.currentTimeMillis() - backPressedTime < 2000) {
             ActivityCompat.finishAffinity(this)
+            finish()
             return
         }
         // 처음 클릭 메시지

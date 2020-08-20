@@ -33,6 +33,7 @@ class CalendarActivity : AppCompatActivity() {
         calendar.setOnClickListener {
             val intent = Intent(this@CalendarActivity, CalendarActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
 

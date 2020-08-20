@@ -53,6 +53,11 @@ class RecyclerView : AppCompatActivity() {
             val intent = Intent(this, loadview::class.java)
             startActivity(intent)
         }
+        upload.setOnClickListener{
+            val intent = Intent(this, RecyclerView::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         var ProfileListDTO: ArrayList<Profiles> = ArrayList<Profiles>()
         var db = FirebaseFirestore.getInstance()
