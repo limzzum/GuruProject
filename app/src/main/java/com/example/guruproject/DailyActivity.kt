@@ -100,13 +100,16 @@ class DailyActivity : AppCompatActivity() {
             ) {
                 when (position) {
                     0 -> {
-                        diolgcategory = "토지"
+                        diolgcategory = resources.getString(R.string.soil)
                     }
                     1 -> {
-                        diolgcategory = "물"
+                        diolgcategory = resources.getString(R.string.water)
                     }
                     2 -> {
-                        diolgcategory = "공기"
+                        diolgcategory = resources.getString(R.string.air)
+                    }
+                    3->{
+                        diolgcategory = resources.getString(R.string.etc)
                     }
                     else -> {
                     }
