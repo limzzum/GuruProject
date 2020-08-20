@@ -15,14 +15,15 @@
         android:theme="@style/AppTheme">
         <!--<activity android:name=".LoadingActivity"></activity>-->
         <activity android:name=".CreateUserActivity"></activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".loadview" />
         <activity android:name=".RecyclerView">
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
 
         </activity>
         <activity android:name=".CalendarActivity">

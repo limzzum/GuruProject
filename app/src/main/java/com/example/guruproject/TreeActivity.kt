@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -87,9 +88,9 @@ class TreeActivity : AppCompatActivity() {
             finish()
         }
         upload.setOnClickListener {
-//            val intent1 = Intent(this@TreeActivity, TreeActivity::class.java)
-//            startActivity(intent1)
-//            finish()
+            val intent1 = Intent(this@TreeActivity, RecyclerView::class.java)
+            startActivity(intent1)
+            finish()
         }
         user_info.setOnClickListener {
             val intent1 = Intent(this@TreeActivity, Profiles::class.java)
@@ -118,7 +119,7 @@ class TreeActivity : AppCompatActivity() {
     override fun onBackPressed() {
         // 2초내 다시 클릭하면 앱 종료
         if (System.currentTimeMillis() - backPressedTime < 2000) {
-            finish()
+            ActivityCompat.finishAffinity(this)
             return
         }
         // 처음 클릭 메시지
