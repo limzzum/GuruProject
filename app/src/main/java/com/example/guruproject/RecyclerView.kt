@@ -49,17 +49,6 @@ class RecyclerView : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        var profiles = arrayListOf(
-//            Profiles(R.drawable.ic_launcher_foreground,"zzum"," 정현",R.drawable.ic_launcher_foreground,"좋은하루"),
-//            Profiles(R.drawable.ic_launcher_foreground,"zzum"," 정현",R.drawable.ic_launcher_foreground,"좋은하루"),
-//            Profiles(R.drawable.ic_launcher_foreground,"zzum"," 정현",R.drawable.ic_launcher_foreground,"좋은하루"),
-//            Profiles(R.drawable.ic_launcher_foreground,"zzum"," 정현",R.drawable.ic_launcher_foreground,"좋은하루"),
-//            Profiles(R.drawable.ic_launcher_foreground,"zzum"," 정현",R.drawable.ic_launcher_foreground,"좋은하루"),
-//            Profiles(R.drawable.ic_launcher_foreground,"zzum"," 정현",R.drawable.ic_launcher_foreground,"좋은하루"),
-//            Profiles(R.drawable.ic_launcher_foreground,"zzum"," 정현",R.drawable.ic_launcher_foreground,"좋은하루"),
-//            Profiles(R.drawable.ic_launcher_foreground,"zzum"," 정현",R.drawable.ic_launcher_foreground,"좋은하루") ,
-//            Profiles(R.drawable.ic_launcher_foreground,"zzum"," 정현",R.drawable.ic_launcher_foreground,"좋은하루")
-//        )
         var ProfileListDTO: ArrayList<Profiles> = ArrayList<Profiles>()
         var db = FirebaseFirestore.getInstance()
 
@@ -91,48 +80,36 @@ class RecyclerView : AppCompatActivity() {
 
             }
     }
+
 //        }
 
-    override fun onStart() {
-        var ProfileListDTO: ArrayList<Profiles> = ArrayList<Profiles>()
-        var db = FirebaseFirestore.getInstance()
 
-
-        db.collection("users").whereEqualTo("userId", "User")
-            .get()
-            .addOnSuccessListener { result ->
-
-                var profileDTO: Profiles
-
-                for (document in result) {
-                    //Log.d(TAG,"$document.id}=>$document.data}")
-                    profileDTO = document.toObject(Profiles::class.java)
-                    ProfileListDTO.add(profileDTO)
-
-                    recycler_view.layoutManager =
-                        LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-                    recycler_view.setHasFixedSize(true)
-                    recycler_view.adapter = ProfileAdapter(ProfileListDTO)
-                    super.onStart()
-
-                }
-
-            }
-    }
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        if(requestCode==200){
-//      val username =data?.getStringExtra("key_name")
-//            var content =data?.getStringExtra("key_content")
-//            var user:Profiles = Profiles(
-//                //  R.drawable.ic_launcher_foreground ,
-//                //"Lim",
-//                userId="User",
-//                //R.drawable.ic_launcher_foreground,
-//                username = username,
-//                postContent = content
-//            )
-//            var db=FirebaseFirestore.getInstance()
-//            db.collection("users").add(user)
-//    }
-//        super.onActivityResult(requestCode, resultCode, data)
-//    }}
+//        if (requestCode == 200) {
+//            var ProfileListDTO: ArrayList<Profiles> = ArrayList<Profiles>()
+//            var db = FirebaseFirestore.getInstance()
+//
+//
+//            db.collection("users").whereEqualTo("userId", "User")
+//                .get()
+//                .addOnSuccessListener { result ->
+//
+//                    var profileDTO: Profiles
+//
+//                    for (document in result) {
+//                        //Log.d(TAG,"$document.id}=>$document.data}")
+//                        profileDTO = document.toObject(Profiles::class.java)
+//                        ProfileListDTO.add(profileDTO)
+//
+//                        recycler_view.layoutManager =
+//                            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+//                        recycler_view.setHasFixedSize(true)
+//                        recycler_view.adapter = ProfileAdapter(ProfileListDTO)
+//
+//
+//                    }
+//
+//                }
+//            super.onActivityResult(requestCode, resultCode, data)
+//        }
+
