@@ -25,11 +25,16 @@
         </intent-filter>
 
         </activity>
-        <activity android:name=".CalendarActivity">
+        <activity android:name=".CalendarActivity"/>
+        <activity android:name=".LoadingActivity"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
-<!--        <activity android:name=".Uploadview" />-->
-<!--        <activity android:name=".uploadactivity" />-->
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"/>
+
         <activity android:name=".DailyActivity" />
         <activity android:name=".TreeActivity" />
     </application>
