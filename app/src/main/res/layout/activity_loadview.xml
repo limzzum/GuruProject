@@ -23,5 +23,5 @@
         android:id="@+id/finish_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="업로드"></Button>
+        android:text="업로드"></Button>
 </LinearLayout>
