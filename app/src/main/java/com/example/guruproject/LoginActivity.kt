@@ -12,11 +12,12 @@ import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+
 import com.google.firebase.ktx.Firebase
 import com.google.rpc.context.AttributeContext
 import kotlinx.android.synthetic.main.activity_login.*
 
-lateinit var auth:FirebaseAuth
+lateinit var auth: FirebaseAuth
 class LoginActivity : AppCompatActivity() {
 
     val RC_SIGN_IN = 9001
