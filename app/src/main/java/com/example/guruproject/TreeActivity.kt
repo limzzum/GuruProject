@@ -91,7 +91,7 @@ class TreeActivity : AppCompatActivity() {
             startActivity(intent1)
         }
         user_info.setOnClickListener {
-            val intent1 = Intent(this@TreeActivity, MainActivity::class.java)
+            val intent1 = Intent(this@TreeActivity, mypage::class.java)
             startActivity(intent1)
         }
 

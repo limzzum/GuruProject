@@ -43,11 +43,10 @@ class CalendarActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //주석 부분 전부 수정 필요! Intent 연결해야함!
-//        my_info.setOnClickListener {
-            //Intent2 대신 내 정보메뉴
-//            val intent = Intent(this@Calendar_example, Intent2::class.java)
-//            startActivity(intent)
-//        }
+
+        my_info.setOnClickListener {
+            val intent = Intent(this@CalendarActivity, mypage::class.java)
+            startActivity(intent)
+        }
     }
 }
