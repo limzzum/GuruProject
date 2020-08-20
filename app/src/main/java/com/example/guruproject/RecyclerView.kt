@@ -16,10 +16,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.common.primitives.UnsignedLongs.sort
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_calendar.*
 import kotlinx.android.synthetic.main.activity_loadview.*
 import kotlinx.android.synthetic.main.activity_recycler_view.*
+import java.util.*
+import java.util.Arrays.sort
+import java.util.Collections.sort
+import kotlin.collections.ArrayList
 
 
 class RecyclerView : AppCompatActivity() {
@@ -72,6 +77,8 @@ class RecyclerView : AppCompatActivity() {
                     //profiles.add(Profiles(userId=UserId, username = Username,postContent =  PostContent))
                     // profiles.add(profilelist)
                 }
+
+
             }
                 //profiles.add(Profiles(UserId,Username,PostContent))
 
