@@ -16,7 +16,7 @@
         <activity android:name=".CreateUserActivity"></activity>
         <activity android:name=".LoginActivity" ></activity>
 
-<!--        <activity android:name=".loadview"></activity>-->
+        <activity android:name=".loadview"></activity>
         <activity android:name=".RecyclerView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
