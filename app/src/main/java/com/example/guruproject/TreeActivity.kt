@@ -1,5 +1,7 @@
 package com.example.guruproject
 
+import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
@@ -73,6 +75,28 @@ class TreeActivity : AppCompatActivity() {
             viewModel.treeclick()
         }
 
+        // tab 연결
+        all_list.setOnClickListener{
+            val intent1 = Intent(this@TreeActivity, TreeActivity::class.java)
+            startActivity(intent1)
+            finish()//이 activity 종료
+        }
+        my_list.setOnClickListener {
+            val intent1 = Intent(this@TreeActivity, CalendarActivity::class.java)
+            startActivity(intent1)
+            finish()
+        }
+        upload.setOnClickListener {
+//            val intent1 = Intent(this@TreeActivity, TreeActivity::class.java)
+//            startActivity(intent1)
+//            finish()
+        }
+        user_info.setOnClickListener {
+            val intent1 = Intent(this@TreeActivity, Profiles::class.java)
+            startActivity(intent1)
+            finish()
+        }
+
         // 관찰 UI 업데이트
         viewModel.missionLiveData.observe(this, androidx.lifecycle.Observer {
             (binding.missionRecyclerview.adapter as MissionAdapter).setData(it)
@@ -88,6 +112,18 @@ class TreeActivity : AppCompatActivity() {
             binding.barair.setProgress(it.getLong("air")!!.toInt())
             binding.barwater.setProgress(it.getLong("water")!!.toInt())
         })
+    }
+
+    private var backPressedTime : Long = 0
+    override fun onBackPressed() {
+        // 2초내 다시 클릭하면 앱 종료
+        if (System.currentTimeMillis() - backPressedTime < 2000) {
+            finish()
+            return
+        }
+        // 처음 클릭 메시지
+        Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+        backPressedTime = System.currentTimeMillis()
     }
 }
 
@@ -289,6 +325,7 @@ class TreeViewModel : ViewModel() {
         var airmissions = ArrayList<String>()
         var soilmissions = ArrayList<String>()
         var watermissions = ArrayList<String>()
+
         airmissions.add("대중교통 이용하기")
         airmissions.add("에어컨 대신 선풍기 사용하기")
         airmissions.add("도보/자전거 이용하기")

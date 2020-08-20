@@ -6,7 +6,8 @@
     <string name="date">일</string>
     <string name="save">저장</string>
     <string name="cancel">취소</string>
-    <string name="ground">토지</string>
+    <string name="soil">토지</string>
     <string name="water">물</string>
     <string name="air">공기</string>
+    <string name="etc">기타</string>
 </resources>

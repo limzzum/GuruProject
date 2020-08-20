@@ -4,5 +4,6 @@
         <item>토지</item>
         <item>물</item>
         <item>공기</item>
+        <item>기타</item>
     </string-array>
 </resources>
