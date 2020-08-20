@@ -62,8 +62,6 @@ class DailyActivity : AppCompatActivity() {
             calendar.get(Calendar.MONTH) + 1,
             calendar.get(Calendar.DATE)
         )
-        Log.d("calender", "yester: " + yesterDay.toString())
-        Log.d("calender", "next: " + nextDay.toString())
 
         val pagerAdapter = ScreenSlidePagerAdapter(
             LayoutInflater.from(this@DailyActivity),
@@ -203,7 +201,9 @@ class DailyActivity : AppCompatActivity() {
             viewModel.tododata1.observe(this@DailyActivity, Observer {
                 var curList = ArrayList<DocumentSnapshot>()
                 for (item in it) {
-                    if (((item.getLong("month"))!!.toInt() == day.month) and ((item.getLong("date"))!!.toInt() == day.date)) {
+                    if (((item.getLong("year"))!!.toInt() == day.year) and
+                        ((item.getLong("month"))!!.toInt() == day.month)
+                        and ((item.getLong("date"))!!.toInt() == day.date)) {
                         curList.add(item)
                     }
                 }
@@ -268,7 +268,6 @@ class DailyAdapter(
 class DailyViewModel : ViewModel() {
     val db = Firebase.firestore
     val tododata1 = MutableLiveData<List<DocumentSnapshot>>()
-    private val data = arrayListOf<Todo>()
 
     init {
         fetchData()
@@ -298,14 +297,11 @@ class DailyViewModel : ViewModel() {
         auth.currentUser?.let { user -> //currentUser가 null이 아닐 때 실행
             db.collection(user.uid).document(user.uid).collection("todo").add(todo)
         }
-        Log.d("daily", "add: " + data.toString())
-        Log.d("daily", "" + tododata1.value)
     }
 
     fun deleteTodo(todo: DocumentSnapshot) {
         auth.currentUser?.let { user ->
             db.collection(user.uid).document(user.uid).collection("todo").document(todo.id).delete()
         }
-        Log.d("daily", "delete: " + data.toString())
     }
 }
