@@ -197,42 +197,24 @@ class TreeViewModel : ViewModel() {
                 .document("treesave")
                 .addSnapshotListener { value, e ->
                     if (e != null) { //에러가 나면
+                        Log.d("togg", "err: " + e)
                         return@addSnapshotListener
                     }
                     if (value != null) {
                         saveLiveDate.value = value
                         Log.d("togg", "savedata: " + value)
-                    } else {
-                        Log.d("togg", "savedata: else")
-                        var m = mutableMapOf<String, Any>()
-                        m["water"] = false
-                        m["air"] = false
-                        m["soil"] = false
-                        auth.currentUser?.let { user -> //currentUser가 null이 아닐 때 실행
-                            db.collection(user.uid).document("treemission").update(m)
-                        }
-                        saveLiveDate.value = m as DocumentSnapshot
                     }
                 }
             db.collection(user.uid)
                 .document("treeicon")
                 .addSnapshotListener { value, e ->
                     if (e != null) { //에러가 나면
+                        Log.d("togg", "err: " + e)
                         return@addSnapshotListener
                     }
                     if (value != null) {
                         iconLiveData.value = value
                         Log.d("tree", "icondata: " + value)
-                    } else {
-                        var m = mutableMapOf<String, Any>()
-                        m["water"] = false
-                        m["air"] = false
-                        m["soil"] = false
-                        m["tree"] = false
-                        auth.currentUser?.let { user -> //currentUser가 null이 아닐 때 실행
-                            db.collection(user.uid).document("treemission").update(m)
-                        }
-                        iconLiveData.value = m as DocumentSnapshot
                     }
                 }
             db.collection(user.uid)
@@ -240,20 +222,12 @@ class TreeViewModel : ViewModel() {
                 .collection("treemission")
                 .addSnapshotListener { value, e ->
                     if (e != null) { //에러가 나면
+                        Log.d("togg", "err: " + e)
                         return@addSnapshotListener
                     }
                     if (value != null) {
                         missionLiveData.value = value.documents
                         Log.d("tree", "missiondata: " + value)
-                    } else {
-                        var m = mutableMapOf<String, Any>()
-                        m["water"] = false
-                        m["air"] = false
-                        m["soil"] = false
-                        auth.currentUser?.let { user -> //currentUser가 null이 아닐 때 실행
-                            db.collection(user.uid).document("treemission").update(m)
-                        }
-                        missionLiveData.value = m as List<DocumentSnapshot>
                     }
                     switchdate()
                     addMission()

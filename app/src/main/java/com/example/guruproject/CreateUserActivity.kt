@@ -7,7 +7,10 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_create_user.*
+import java.util.*
 
 class CreateUserActivity : AppCompatActivity() {
 
@@ -51,6 +54,54 @@ class CreateUserActivity : AppCompatActivity() {
                             // 아니면 액티비티를 닫아 버린다.
                             //finish()
                             //overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit)
+
+                            // db구축
+                            val db = Firebase.firestore
+                            Log.d("togg", "savedata: else")
+                            var m = hashMapOf(
+                                "air" to 0,
+                                "soil" to 0,
+                                "water" to 0
+                            )
+                            auth.currentUser?.let  { user -> //currentUser가 null이 아닐 때 실행
+                                db.collection(user.uid).document("treesave").set(m)
+                            }
+                            var m1 = hashMapOf(
+                                "air" to 4,
+                                "soil" to 4,
+                                "water" to 4,
+                                "tree" to 0
+                            )
+                            auth.currentUser?.let { user -> //currentUser가 null이 아닐 때 실행
+                                db.collection(user.uid).document("treeicon").set(m1)
+                            }
+                            var a = hashMapOf(
+                                "category" to "air",
+                                "date" to Calendar.getInstance().get(Calendar.DATE).toInt()-1,
+                                "isDone" to false,
+                                "text" to ""
+                            )
+                            var w = hashMapOf(
+                                "category" to "water",
+                                "date" to Calendar.getInstance().get(Calendar.DATE).toInt()-1,
+                                "isDone" to false,
+                                "text" to ""
+                            )
+                            var s = hashMapOf(
+                                "category" to "soil",
+                                "date" to Calendar.getInstance().get(Calendar.DATE).toInt()-1,
+                                "isDone" to false,
+                                "text" to ""
+                            )//com.example.guruproject.
+                            auth.currentUser?.let { user -> //currentUser가 null이 아닐 때 실행
+                                db.collection(user.uid).document(user.uid).collection("treemission")
+                                    .document("air").set(a)
+                                db.collection(user.uid).document(user.uid).collection("treemission")
+                                    .document("water").set(w)
+                                db.collection(user.uid).document(user.uid).collection("treemission")
+                                    .document("soil").set(s)
+                            }
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.exception)
