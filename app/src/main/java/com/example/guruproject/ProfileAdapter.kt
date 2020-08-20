@@ -27,19 +27,19 @@ class ProfileAdapter(var profileList:ArrayList<Profiles>): RecyclerView.Adapter<
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-          holder.profile.setImageResource(profileList.get(position).profile)
+          //holder.profile.setImageResource(profileList.get(position).profile)
         holder.userId.text=(profileList.get(position).userId)
         holder.username.text=(profileList.get(position).username)
-        holder.postImg.setImageResource(profileList.get(position).postImg)
+        //holder.postImg.setImageResource(profileList.get(position).postImg)
         holder.postContent.text=(profileList.get(position).postContent)
 
 
     }
     class CustomViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
-        val profile: ImageView =itemView.findViewById<ImageView>(R.id.iv_profile)
+       // val profile: ImageView =itemView.findViewById<ImageView>(R.id.iv_profile)
         val userId: TextView =itemView.findViewById<TextView>(R.id.tv_userId)
         val username: TextView =itemView.findViewById<TextView>(R.id.tv_username)
-        val postImg: ImageView =itemView.findViewById<ImageView>(R.id.iv_postImg)
+        //val postImg: ImageView =itemView.findViewById<ImageView>(R.id.iv_postImg)
         val postContent: TextView =itemView.findViewById<TextView>(R.id.tv_postContent)
 
     }
