@@ -35,13 +35,14 @@ class CalendarActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //주석 부분 전부 수정 필요! Intent 연결해야함!
-//        community.setOnClickListener {
-            //Intent2 대신 커뮤니티메뉴
-//            val intent = Intent(this@CalendarActivity, Intent2::class.java)
-//            startActivity(intent)
-//        }
 
+        community.setOnClickListener {
+            //Intent2 대신 커뮤니티메뉴
+            val intent = Intent(this@CalendarActivity, RecyclerView::class.java)
+            startActivity(intent)
+        }
+
+        //주석 부분 전부 수정 필요! Intent 연결해야함!
 //        my_info.setOnClickListener {
             //Intent2 대신 내 정보메뉴
 //            val intent = Intent(this@Calendar_example, Intent2::class.java)
