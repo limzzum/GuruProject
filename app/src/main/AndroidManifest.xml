@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <!--<activity android:name=".LoadingActivity"></activity>-->
         <activity android:name=".CreateUserActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".loadview" />
         <activity android:name=".RecyclerView">
+
         </activity>
         <activity android:name=".CalendarActivity">
         </activity>
