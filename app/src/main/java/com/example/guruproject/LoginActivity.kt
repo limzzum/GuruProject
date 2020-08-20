@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
                             val user = auth.currentUser
                             updateUI(user)
 
-                            val intent = Intent(this@LoginActivity, CalendarActivity::class.java)
+                            val intent = Intent(this@LoginActivity, TreeActivity::class.java)
                             startActivity(intent)
                         } else {
                             // If sign in fails, display a message to the user.
