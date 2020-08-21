@@ -24,8 +24,12 @@ class mypage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mypage)
 
-
        // (FirebaseAuth.getInstance().currentUser)
+        val user1 = auth.currentUser
+        user1?.let {
+            val email = user1.email
+            user.setText(email)
+        }
 
         val button1: ImageButton = findViewById(R.id.tree)
         val button2: ImageButton = findViewById(R.id.calendar)

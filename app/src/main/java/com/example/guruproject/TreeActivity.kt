@@ -73,13 +73,13 @@ class TreeActivity : AppCompatActivity() {
         }
 
         // tab 연결
-        val button1: ImageButton =findViewById(R.id.tree)
-        val button2: ImageButton =findViewById(R.id.calendar)
-        val button3: ImageButton =findViewById(R.id.community)
-        val button4: ImageButton =findViewById(R.id.my_info)
+        val button1: ImageButton = findViewById(R.id.tree)
+        val button2: ImageButton = findViewById(R.id.calendar)
+        val button3: ImageButton = findViewById(R.id.community)
+        val button4: ImageButton = findViewById(R.id.my_info)
 
-        button1.setOnClickListener{
-            val intent = Intent(this@TreeActivity,TreeActivity::class.java)
+        button1.setOnClickListener {
+            val intent = Intent(this@TreeActivity, TreeActivity::class.java)
             startActivity(intent)
         }
         button2.setOnClickListener {
@@ -214,6 +214,9 @@ class TreeViewModel : ViewModel() {
                     if (value != null) {
                         saveLiveDate.value = value
                     }
+                    changeBackground(saveLiveDate.value!!.getLong("air")!!.toInt(),
+                        saveLiveDate.value!!.getLong("soil")!!.toInt(),
+                        saveLiveDate.value!!.getLong("water")!!.toInt())
                 }
             db.collection(user.uid)
                 .document("treeicon")
@@ -224,7 +227,6 @@ class TreeViewModel : ViewModel() {
                     if (value != null) {
                         iconLiveData.value = value
                     }
-                    changeBackground(iconLiveData.value!!.getLong("tree")!!.toInt())
                 }
             db.collection(user.uid)
                 .document(user.uid)
@@ -263,7 +265,7 @@ class TreeViewModel : ViewModel() {
 
         val instance = Calendar.getInstance()
         val date = instance.get(Calendar.DATE)
-        if (date != missionLiveData.value!!.get(0).getLong("date")!!.toInt()){
+        if (date != missionLiveData.value!!.get(0).getLong("date")!!.toInt()) {
             auth.currentUser?.let { user -> //currentUser가 null이 아닐 때 실행
                 db.collection(user.uid).document(user.uid).collection("treemission")
                     .document("air").update("date", date)
@@ -299,20 +301,34 @@ class TreeViewModel : ViewModel() {
         if (isDone == true) {
             value = iconLiveData.value!!.getLong(mission.getString("category")!!)!!.toInt() + 1
 
-            //val date = instance.get(Calendar.DATE)
-            var todo:Todo=Todo(0,0,0,"","")
-            when(mission.getString("category")!!){
-                "air"->{
-                    todo = Todo(instance.get(Calendar.YEAR),instance.get(Calendar.MONTH)+1,instance.get(Calendar.DATE),
-                        "공기mission",missionLiveData.value!!.get(0).getString("text")!!)
+            var todo: Todo = Todo(0, 0, 0, "", "")
+            when (mission.getString("category")!!) {
+                "air" -> {
+                    todo = Todo(
+                        instance.get(Calendar.YEAR),
+                        instance.get(Calendar.MONTH) + 1,
+                        instance.get(Calendar.DATE),
+                        "공기mission",
+                        missionLiveData.value!!.get(0).getString("text")!!
+                    )
                 }
-                "soil"->{
-                    todo = Todo(instance.get(Calendar.YEAR),instance.get(Calendar.MONTH)+1,instance.get(Calendar.DATE),
-                        "토지mission",missionLiveData.value!!.get(1).getString("text")!!)
+                "soil" -> {
+                    todo = Todo(
+                        instance.get(Calendar.YEAR),
+                        instance.get(Calendar.MONTH) + 1,
+                        instance.get(Calendar.DATE),
+                        "토지mission",
+                        missionLiveData.value!!.get(1).getString("text")!!
+                    )
                 }
-                "water"->{
-                    todo = Todo(instance.get(Calendar.YEAR),instance.get(Calendar.MONTH)+1,instance.get(Calendar.DATE),
-                        "물mission",missionLiveData.value!!.get(2).getString("text")!!)
+                "water" -> {
+                    todo = Todo(
+                        instance.get(Calendar.YEAR),
+                        instance.get(Calendar.MONTH) + 1,
+                        instance.get(Calendar.DATE),
+                        "물mission",
+                        missionLiveData.value!!.get(2).getString("text")!!
+                    )
                 }
             }
             auth.currentUser?.let { user ->
@@ -320,16 +336,18 @@ class TreeViewModel : ViewModel() {
             }
         } else {
             value = iconLiveData.value!!.getLong(mission.getString("category")!!)!!.toInt() - 1
-            var size = tododata1.value!!.size -1
-            for(i in 0..size){
-                var item=tododata1.value!!.get(i)
+            var size = tododata1.value!!.size - 1
+            for (i in 0..size) {
+                var item = tododata1.value!!.get(i)
                 if (((item.getLong("year"))!!.toInt() == instance.get(Calendar.YEAR))
-                    and ((item.getLong("month"))!!.toInt() == instance.get(Calendar.MONTH)+1)
+                    and ((item.getLong("month"))!!.toInt() == instance.get(Calendar.MONTH) + 1)
                     and ((item.getLong("date"))!!.toInt() == instance.get(Calendar.DATE))
-                and(item.getString("category")!!.contains("mission"))
-                and(item.getString("content")==mission.getString("text"))){
+                    and (item.getString("category")!!.contains("mission"))
+                    and (item.getString("content") == mission.getString("text"))
+                ) {
                     auth.currentUser?.let { user ->
-                        db.collection(user.uid).document(user.uid).collection("todo").document(item.id).delete()
+                        db.collection(user.uid).document(user.uid).collection("todo")
+                            .document(item.id).delete()
                     }
                     break
                 }
@@ -352,14 +370,17 @@ class TreeViewModel : ViewModel() {
         var icontree = iconLiveData.value!!.getLong("tree")!!.toInt()
         if ((saveair == 100) and (savesoil == 100) and (savewater == 100)) {
             icontree++
+            saveair=0
+            savesoil=0
+            savewater=0
             auth.currentUser?.let { user -> //currentUser가 null이 아닐 때 실행
                 db.collection(user.uid).document("treeicon").update("tree", icontree)
-                db.collection(user.uid).document("treesave").update("air", 0)
-                db.collection(user.uid).document("treesave").update("soil", 0)
-                db.collection(user.uid).document("treesave").update("water", 0)
+                db.collection(user.uid).document("treesave").update("air", saveair)
+                db.collection(user.uid).document("treesave").update("soil", savesoil)
+                db.collection(user.uid).document("treesave").update("water", savewater)
             }
-            changeBackground(icontree)
         }
+        changeBackground(saveair, savesoil, savewater)
     }
 
     // 공기, 물, 토지 이미지 누르면 값-1
@@ -390,6 +411,7 @@ class TreeViewModel : ViewModel() {
         if ((saveair == 100) and (savesoil == 100) and (savewater == 100)) {
             Toast.makeText(view.context, "나무를 눌러주세요!", Toast.LENGTH_LONG).show()
         }
+        changeBackground(saveair, savesoil, savewater)
     }
 
     // tree이미지 누르면
@@ -399,21 +421,15 @@ class TreeViewModel : ViewModel() {
 }
 
 // 바탕화면(나무사진) 변경 함수
-fun changeBackground(icontree:Int) {
-    if (icontree %7 == 0) {
-        binding.treeRelativelayout.setBackgroundResource(R.drawable.tree1)
-    } else if (icontree %7 == 1) {
-        binding.treeRelativelayout.setBackgroundResource(R.drawable.tree2)
-    } else if (icontree %7 == 2) {
-        binding.treeRelativelayout.setBackgroundResource(R.drawable.tree3)
-    } else if (icontree %7 == 3) {
-        binding.treeRelativelayout.setBackgroundResource(R.drawable.tree4)
-    } else if (icontree %7 == 4) {
-        binding.treeRelativelayout.setBackgroundResource(R.drawable.tree5)
-    } else if (icontree %7 ==5) {
-        binding.treeRelativelayout.setBackgroundResource(R.drawable.tree6)
+fun changeBackground(saveair: Int, savesoil:Int, savewater:Int) {
+    if ((saveair>=75) and (savesoil>=75) and (savewater>=75)) { //마지막
+        binding.treeImageView2.setImageResource(R.drawable.tree1)
+    } else if ((saveair>=50) and (savesoil>=50) and (savewater>=50)) {
+        binding.treeImageView2.setImageResource(R.drawable.tree2)
+    } else if ((saveair>=25) and (savesoil>=25) and (savewater>=25)) {
+        binding.treeImageView2.setImageResource(R.drawable.tree3)
     } else {
-        binding.treeRelativelayout.setBackgroundResource(R.drawable.tree7)
+        binding.treeImageView2.setImageResource(R.drawable.tree4)
     }
 }
 
