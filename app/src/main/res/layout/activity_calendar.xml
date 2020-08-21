@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalendarActivity">
+    tools:context=".CalendarActivity"
+    android:background="@color/backgroundcolor">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,9 +24,10 @@
                 android:layout_gravity="center"
                 android:text="Calender"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/maincolor"
                 android:textSize="24sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:fontFamily="@font/mapogoldenpier"/>
             <CalendarView
                 android:id="@+id/calendarView"
                 android:layout_width="wrap_content"
@@ -38,49 +40,49 @@
     <LinearLayout
         android:id="@+id/side_menu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="bottom">
 
-        <TextView
+        <ImageButton
             android:id="@+id/tree"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#673AB7"
-            android:text="나무"
-            android:textAlignment="center"
-            android:textSize="20dp" />
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/treetab"
+            android:background="#ffffff" />
 
-        <TextView
+        <ImageButton
             android:id="@+id/calendar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#FFC107"
-            android:text="캘린더"
-            android:textAlignment="center"
-            android:textSize="20dp" />
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/calendar"
+            android:background="#ffffff" />
 
-        <TextView
+        <ImageButton
             android:id="@+id/community"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#8BC34A"
-            android:text="커뮤니티"
-            android:textAlignment="center"
-            android:textSize="20dp" />
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/community"
+            android:background="#ffffff" />
 
-        <TextView
+        <ImageButton
             android:id="@+id/my_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#E91E63"
-            android:text="내 정보"
-            android:textAlignment="center"
-            android:textSize="20dp" />
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/me32"
+            android:background="#ffffff" />
 
     </LinearLayout>
 </RelativeLayout>

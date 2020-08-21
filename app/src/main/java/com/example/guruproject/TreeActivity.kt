@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -72,23 +73,26 @@ class TreeActivity : AppCompatActivity() {
         }
 
         // tab 연결
-        all_list.setOnClickListener {
-            val intent1 = Intent(this@TreeActivity, TreeActivity::class.java)
-            startActivity(intent1)
-            finish()//이 activity 종료
+        val button1: ImageButton =findViewById(R.id.tree)
+        val button2: ImageButton =findViewById(R.id.calendar)
+        val button3: ImageButton =findViewById(R.id.community)
+        val button4: ImageButton =findViewById(R.id.my_info)
+
+        button1.setOnClickListener{
+            val intent = Intent(this@TreeActivity,TreeActivity::class.java)
+            startActivity(intent)
         }
-        my_list.setOnClickListener {
-            val intent1 = Intent(this@TreeActivity, CalendarActivity::class.java)
-            startActivity(intent1)
+        button2.setOnClickListener {
+            val intent = Intent(this@TreeActivity, CalendarActivity::class.java)
+            startActivity(intent)
         }
-        upload.setOnClickListener {
-            val intent1 =
-                Intent(this@TreeActivity, com.example.guruproject.RecyclerView::class.java)
-            startActivity(intent1)
+        button3.setOnClickListener {
+            val intent = Intent(this@TreeActivity, com.example.guruproject.RecyclerView::class.java)
+            startActivity(intent)
         }
-        user_info.setOnClickListener {
-            val intent1 = Intent(this@TreeActivity, mypage::class.java)
-            startActivity(intent1)
+        button4.setOnClickListener {
+            val intent = Intent(this@TreeActivity, mypage::class.java)
+            startActivity(intent)
         }
 
         // 관찰 UI 업데이트

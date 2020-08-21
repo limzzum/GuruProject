@@ -3,6 +3,7 @@ package com.example.guruproject
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageButton
 import kotlinx.android.synthetic.main.activity_calendar.*
 
 /*5번 화면*/
@@ -24,29 +25,29 @@ class CalendarActivity : AppCompatActivity() {
         }
 
         // 나무 메뉴가 선택되면
-        tree.setOnClickListener {
-            val intent1 = Intent(this@CalendarActivity, TreeActivity::class.java)
-            startActivity(intent1)
+        val button1: ImageButton =findViewById(R.id.tree)
+        val button2: ImageButton =findViewById(R.id.calendar)
+        val button3: ImageButton =findViewById(R.id.community)
+        val button4: ImageButton =findViewById(R.id.my_info)
 
+        button1.setOnClickListener{
+            val intent = Intent(this@CalendarActivity,TreeActivity::class.java)
+            startActivity(intent)
         }
 
-        calendar.setOnClickListener {
+        button2.setOnClickListener {
             val intent = Intent(this@CalendarActivity, CalendarActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
 
-        community.setOnClickListener {
-            //Intent2 대신 커뮤니티메뉴
-            val intent = Intent(this@CalendarActivity, RecyclerView::class.java)
+        button3.setOnClickListener {
+            val intent = Intent(this@CalendarActivity, com.example.guruproject.RecyclerView::class.java)
             startActivity(intent)
         }
-
-
-        my_info.setOnClickListener {
-//            val intent = Intent(this@CalendarActivity, mypage::class.java)
-//            startActivity(intent)
+        button4.setOnClickListener {
+            val intent = Intent(this@CalendarActivity, mypage::class.java)
+            startActivity(intent)
         }
     }
 }
