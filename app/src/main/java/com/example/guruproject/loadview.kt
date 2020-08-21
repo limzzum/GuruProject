@@ -1,19 +1,17 @@
 package com.example.guruproject
 
-//import android.support.v7.app.AppCompatActivity
+
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_loadview.*
 
-//import kotlinx.android.synthetic.main.activity_upload_view.*
-
-//import kotlinx.android.synthetic.main.activity_upload_view.*
 
 
 class loadview : AppCompatActivity() {
@@ -27,52 +25,25 @@ class loadview : AppCompatActivity() {
             startActivity(intent1)
         }
         finish_button.setOnClickListener {
-val username= edit_name.getText().toString()
-            val content=edit_content.getText().toString()
-          //  val username=findViewById<EditText>(R.id.edit_name).toString()
+            val username = edit_name.getText().toString()
+            val content = edit_content.getText().toString()
 
-           // val content=findViewById<EditText>(R.id.edit_content).toString()
+            if (username.length == 0 || content.length == 0) {
+                Toast.makeText(this, "이름 혹은 내용을 반드시 입력하세요.", Toast.LENGTH_SHORT).show()
+            } else {
 
-            val intent=Intent(this,RecyclerView::class.java)
-        intent.putExtra("key_username",username)
-            intent.putExtra("key_content",content)
-           setResult(Activity.RESULT_OK,intent)
-finish()
-            var user:Profiles = Profiles(
-                //  R.drawable.ic_launcher_foreground ,
-                //"Lim",
-                userId="User",
-                //R.drawable.ic_launcher_foreground,
-                username = username,
-                postContent = content
-            )
-            var db= FirebaseFirestore.getInstance()
-            db.collection("users").add(user)
+
+                var user: Profiles = Profiles(
+                    userId = "User",
+                    username = username,
+                    postContent = content
+                )
+                var db = FirebaseFirestore.getInstance()
+                db.collection("users").add(user)
+                val intent = Intent(this, RecyclerView::class.java)
+
+                startActivity(intent)
+
+            }
         }
-
-    }
-//    private fun getPicture(){
-//        val intent= Intent(Intent.ACTION_PICK)
-//        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-//        intent.setType("image/*")
-//        startActivityForResult(intent, 1000)
-//
-//    }
-//
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode==1000){
-//            val uri: Uri =data!!.data!!
-//        }
-//    }
-//    fun getImageFilePath(contentUri: Uri):String{
-//        var columnIndex=0
-//        val projection=arrayOf(MediaStore.Images.Media.DATA)
-//        val cursor=contentResolver.query(contentUri,projection,null,null,null)
-//        if(cursor!!.moveToFirst()){
-//            columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-//        }
-//        return cursor.getString(columnIndex)
-//
-//    }
-}
+}}

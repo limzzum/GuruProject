@@ -4,20 +4,20 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.util.Log.d
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.getSystemService
+import com.google.android.gms.auth.api.Auth
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_calendar.*
 import kotlinx.android.synthetic.main.activity_mypage.*
+import java.util.concurrent.ThreadLocalRandom.current
 
 class mypage : AppCompatActivity() {
 
@@ -25,6 +25,13 @@ class mypage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mypage)
+
+       // (FirebaseAuth.getInstance().currentUser)
+        val user1 = auth.currentUser
+        user1?.let {
+            val email = user1.email
+            user.setText(email)
+        }
 
         val button1: ImageButton = findViewById(R.id.tree)
         val button2: ImageButton = findViewById(R.id.calendar)
@@ -56,13 +63,13 @@ class mypage : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         //회원 탈퇴
         quit.setOnClickListener {
             showSettingPopup()
         }
     }
 
+    //계정 삭제 함수
     fun deleteUser() {
         FirebaseAuth.getInstance().currentUser!!.delete().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -82,11 +89,12 @@ class mypage : AppCompatActivity() {
         }
     }
 
+    //탈퇴 팝업창 함수
     private fun showSettingPopup() {
         val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.activity_alert_popup, null)
         val textView: TextView = view.findViewById(R.id.textView)
-        textView.text = "진짜 탈퇴하시겠습니까?"
+        textView.text = "정말 탈퇴하시겠습니까?"
 
         val alertDialog = AlertDialog.Builder(this)
             .setPositiveButton("확인") { dialog, which ->
