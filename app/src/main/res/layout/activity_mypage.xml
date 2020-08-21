@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".mypage"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#ffffff">
 
 
     <LinearLayout
@@ -14,10 +15,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="내 정보"
+            android:text="My Page"
             android:gravity="center"
-            android:textSize="30dp"
-            android:textColor="#118E17"/>
+            android:layout_marginTop="7dp"
+            android:textSize="40dp"
+            android:textColor="#118E17"
+            android:fontFamily="@font/mapogoldenpier"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,25 +46,29 @@
             android:layout_height="wrap_content"
             android:text="회원 탈퇴"
             android:textSize="25dp"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:fontFamily="@font/mapogoldenpier"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="설정"
             android:textSize="25dp"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:fontFamily="@font/mapogoldenpier"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="또 뭐가 있지"
             android:textSize="25dp"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:fontFamily="@font/mapogoldenpier"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="또 뭐가 있지"
             android:textSize="25dp"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:fontFamily="@font/mapogoldenpier"/>
 
     </LinearLayout>
 
@@ -72,45 +79,45 @@
         android:orientation="horizontal"
         android:gravity="bottom">
 
-        <TextView
+        <ImageButton
             android:id="@+id/tree"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#673AB7"
-            android:text="나무"
-            android:textAlignment="center"
-            android:textSize="20dp" />
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/treetab"
+            android:background="#ffffff" />
 
-        <TextView
+        <ImageButton
             android:id="@+id/calendar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#FFC107"
-            android:text="캘린더"
-            android:textAlignment="center"
-            android:textSize="20dp" />
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/calendar"
+            android:background="#ffffff" />
 
-        <TextView
+        <ImageButton
             android:id="@+id/community"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#8BC34A"
-            android:text="커뮤니티"
-            android:textAlignment="center"
-            android:textSize="20dp" />
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/community"
+            android:background="#ffffff" />
 
-        <TextView
+        <ImageButton
             android:id="@+id/my_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#E91E63"
-            android:text="내 정보"
-            android:textAlignment="center"
-            android:textSize="20dp" />
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/me32"
+            android:background="#ffffff" />
 
     </LinearLayout>
 

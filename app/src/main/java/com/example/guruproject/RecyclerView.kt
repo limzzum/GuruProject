@@ -14,6 +14,7 @@ package com.example.guruproject
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.common.primitives.UnsignedLongs.sort
@@ -36,27 +37,33 @@ class RecyclerView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recycler_view)
 
+        val button1: ImageButton =findViewById(R.id.tree)
+        val button2: ImageButton =findViewById(R.id.calendar)
+        val button3: ImageButton =findViewById(R.id.community)
+        val button4: ImageButton =findViewById(R.id.my_info)
 
-        all_list.setOnClickListener {
-            val intent = Intent(this, TreeActivity::class.java)
+        button1.setOnClickListener{
+            val intent = Intent(this@RecyclerView,TreeActivity::class.java)
             startActivity(intent)
         }
-        my_list.setOnClickListener {
-            val intent = Intent(this, CalendarActivity::class.java)
+
+        button2.setOnClickListener {
+            val intent = Intent(this@RecyclerView, CalendarActivity::class.java)
             startActivity(intent)
         }
-        user_info.setOnClickListener {
-//            val intent = Intent(this, mypage::class.java)
-//            startActivityForResult(intent, 200)
+
+
+        button3.setOnClickListener {
+            val intent = Intent(this@RecyclerView, com.example.guruproject.RecyclerView::class.java)
+            startActivity(intent)
+        }
+        button4.setOnClickListener {
+            val intent = Intent(this@RecyclerView, mypage::class.java)
+            startActivity(intent)
         }
         upload_button.setOnClickListener {
             val intent = Intent(this, loadview::class.java)
             startActivity(intent)
-        }
-        upload.setOnClickListener{
-            val intent = Intent(this, RecyclerView::class.java)
-            startActivity(intent)
-            finish()
         }
 
         var ProfileListDTO: ArrayList<Profiles> = ArrayList<Profiles>()
