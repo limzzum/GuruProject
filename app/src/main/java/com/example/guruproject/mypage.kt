@@ -23,8 +23,7 @@ class mypage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mypage)
-val Id=findViewById<TextView>(R.id.user)
-         Id.setText(auth.currentUser.toString())
+
 
        // (FirebaseAuth.getInstance().currentUser)
 
