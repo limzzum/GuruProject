@@ -23,10 +23,13 @@ class mypage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mypage)
-val Id=findViewById<TextView>(R.id.user)
-         Id.setText(FirebaseAuth.getInstance().currentUser.toString())
 
        // (FirebaseAuth.getInstance().currentUser)
+        val user1 = auth.currentUser
+        user1?.let {
+            val email = user1.email
+            user.setText(email)
+        }
 
         val button1: ImageButton = findViewById(R.id.tree)
         val button2: ImageButton = findViewById(R.id.calendar)

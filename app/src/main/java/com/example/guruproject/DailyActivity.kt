@@ -3,7 +3,6 @@ package com.example.guruproject
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -267,7 +266,6 @@ class DailyAdapter(
 class DailyViewModel : ViewModel() {
     val db = Firebase.firestore
     val tododata1 = MutableLiveData<List<DocumentSnapshot>>()
-    val missionLiveData = MutableLiveData<List<DocumentSnapshot>>()
     val iconLiveData = MutableLiveData<DocumentSnapshot>()
 
     init {
@@ -286,14 +284,6 @@ class DailyViewModel : ViewModel() {
                     }
                     if (value != null) {
                         tododata1.value = value.documents
-                    }
-                }
-            db.collection(user.uid)
-                .document(user.uid)
-                .collection("treemission")
-                .addSnapshotListener { value, e ->
-                    if (e != null) { //에러가 나면
-                        return@addSnapshotListener
                     }
                 }
             db.collection(user.uid)
@@ -318,13 +308,11 @@ class DailyViewModel : ViewModel() {
 
     fun deleteTodo(todo: DocumentSnapshot) {
         var c:String =""
-        Log.d("del","into" + todo.getString("category"))
         auth.currentUser?.let { user ->
             db.collection(user.uid).document(user.uid).collection("todo").document(todo.id).delete()
         }
         // mission 창과 아이콘 연동
         if(todo.getString("category")!!.contains("mission")){
-            Log.d("del","mission")
             if(todo.getString("category")!!.contains("물")){
                 c="water"
             }else if(todo.getString("category")!!.contains("토지")){
@@ -334,7 +322,6 @@ class DailyViewModel : ViewModel() {
             }
             var cminus = iconLiveData.value!!.getLong(c)!!.toInt()-1
             auth.currentUser?.let { user ->
-                Log.d("del","c"+c)
                 db.collection(user.uid).document(user.uid).collection("treemission")
                     .document(c).update("isDone", false)
                 db.collection(user.uid).document("treeicon")
