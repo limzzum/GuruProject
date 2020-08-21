@@ -38,6 +38,17 @@ class mypage : AppCompatActivity() {
             startActivity(intent)
         }
 
+        //로그아웃
+        logout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            Toast.makeText(this, "로그아웃이 완료되었습니다", Toast.LENGTH_SHORT).show()
+
+            //로그인 화면으로 돌아가기
+            val intent = Intent(this@mypage, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+
         //회원 탈퇴
         quit.setOnClickListener {
             FirebaseAuth.getInstance().currentUser!!.delete().addOnCompleteListener { task ->
