@@ -2,7 +2,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundcolor">
 
     <TextView
         android:id="@+id/daily_recy_text"
@@ -29,7 +30,8 @@
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_weight="1"
-        android:backgroundTint="#FF5722"
+        android:src="@drawable/trash"
+        android:background="@color/backgroundcolor"
         android:layout_gravity="center"
         android:layout_margin="10dp"/>
 

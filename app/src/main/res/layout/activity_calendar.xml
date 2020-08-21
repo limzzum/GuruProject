@@ -11,23 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Calendar"
+            android:gravity="center"
+            android:layout_marginTop="7dp"
+            android:textSize="40dp"
+            android:textColor="#118E17"
+            android:fontFamily="@font/mapogoldenpier"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_centerInParent="true">
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:text="Calender"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@color/maincolor"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/mapogoldenpier"/>
             <CalendarView
                 android:id="@+id/calendarView"
                 android:layout_width="wrap_content"
