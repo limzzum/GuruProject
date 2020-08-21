@@ -22,7 +22,10 @@ class loadview : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loadview)
 
-
+        cancel_button.setOnClickListener {
+            val intent1=Intent(this,RecyclerView::class.java)
+            startActivity(intent1)
+        }
         finish_button.setOnClickListener {
 val username= edit_name.getText().toString()
             val content=edit_content.getText().toString()
@@ -48,28 +51,28 @@ finish()
         }
 
     }
-    private fun getPicture(){
-        val intent= Intent(Intent.ACTION_PICK)
-        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.setType("image/*")
-        startActivityForResult(intent, 1000)
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode==1000){
-            val uri: Uri =data!!.data!!
-        }
-    }
-    fun getImageFilePath(contentUri: Uri):String{
-        var columnIndex=0
-        val projection=arrayOf(MediaStore.Images.Media.DATA)
-        val cursor=contentResolver.query(contentUri,projection,null,null,null)
-        if(cursor!!.moveToFirst()){
-            columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        }
-        return cursor.getString(columnIndex)
-
-    }
+//    private fun getPicture(){
+//        val intent= Intent(Intent.ACTION_PICK)
+//        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+//        intent.setType("image/*")
+//        startActivityForResult(intent, 1000)
+//
+//    }
+//
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode==1000){
+//            val uri: Uri =data!!.data!!
+//        }
+//    }
+//    fun getImageFilePath(contentUri: Uri):String{
+//        var columnIndex=0
+//        val projection=arrayOf(MediaStore.Images.Media.DATA)
+//        val cursor=contentResolver.query(contentUri,projection,null,null,null)
+//        if(cursor!!.moveToFirst()){
+//            columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+//        }
+//        return cursor.getString(columnIndex)
+//
+//    }
 }
