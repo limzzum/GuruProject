@@ -193,7 +193,6 @@ class DailyActivity : AppCompatActivity() {
                 adapter = DailyAdapter(emptyList(),
                     onClickDeleteIcon = {
                         viewModel.deleteTodo(it)
-                        Log.d("daily", it.getString("content"))
                     }
                 )
             }
@@ -268,6 +267,8 @@ class DailyAdapter(
 class DailyViewModel : ViewModel() {
     val db = Firebase.firestore
     val tododata1 = MutableLiveData<List<DocumentSnapshot>>()
+    val missionLiveData = MutableLiveData<List<DocumentSnapshot>>()
+    val iconLiveData = MutableLiveData<DocumentSnapshot>()
 
     init {
         fetchData()
@@ -286,8 +287,27 @@ class DailyViewModel : ViewModel() {
                     if (value != null) {
                         tododata1.value = value.documents
                     }
-                    Log.d("daily", "db: " + tododata1)
-                    Log.d("daily", "db auth: " + auth)
+                }
+            db.collection(user.uid)
+                .document(user.uid)
+                .collection("treemission")
+                .addSnapshotListener { value, e ->
+                    if (e != null) { //에러가 나면
+                        return@addSnapshotListener
+                    }
+                    if (value != null) {
+                        missionLiveData.value = value.documents
+                    }
+                }
+            db.collection(user.uid)
+                .document("treeicon")
+                .addSnapshotListener { value, e ->
+                    if (e != null) { //에러가 나면
+                        return@addSnapshotListener
+                    }
+                    if (value != null) {
+                        iconLiveData.value = value
+                    }
                 }
         }
 
@@ -300,8 +320,28 @@ class DailyViewModel : ViewModel() {
     }
 
     fun deleteTodo(todo: DocumentSnapshot) {
+        var c:String =""
+        Log.d("del","into" + todo.getString("category"))
         auth.currentUser?.let { user ->
             db.collection(user.uid).document(user.uid).collection("todo").document(todo.id).delete()
+        }
+        if(todo.getString("category")!!.contains("mission")){
+            Log.d("del","mission")
+            if(todo.getString("category")!!.contains("물")){
+                c="water"
+            }else if(todo.getString("category")!!.contains("토지")){
+                c="soil"
+            }else{
+                c="air"
+            }
+            var cminus = iconLiveData.value!!.getLong(c)!!.toInt()-1
+            auth.currentUser?.let { user ->
+                Log.d("del","c"+c)
+                db.collection(user.uid).document(user.uid).collection("treemission")
+                    .document(c).update("isDone", false)
+                db.collection(user.uid).document("treeicon")
+                    .update(c, cminus)
+            }
         }
     }
 }

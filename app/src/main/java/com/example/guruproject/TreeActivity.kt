@@ -28,7 +28,7 @@ import java.util.*
 private lateinit var binding: ActivityTreeBinding
 
 class TreeActivity : AppCompatActivity() {
-    private val viewModel: TreeViewModel by viewModels()
+    private val treeviewModel: TreeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         CustomClass(this)
@@ -43,7 +43,7 @@ class TreeActivity : AppCompatActivity() {
             adapter = MissionAdapter(
                 emptyList(),
                 onClickItem = {
-                    viewModel.toggleMission(it)
+                    treeviewModel.toggleMission(it)
                 }
             )
         }
@@ -59,16 +59,16 @@ class TreeActivity : AppCompatActivity() {
 
         // 해, 물뿌리개, 거름, 나무 그림을 클릭했을 때 전체적인 화면이 바뀌고, 해당 그림의 수 -1
         soil_img.setOnClickListener {
-            viewModel.imgClick("soil", view)
+            treeviewModel.imgClick("soil", view)
         }
         water_img.setOnClickListener {
-            viewModel.imgClick("water", view)
+            treeviewModel.imgClick("water", view)
         }
         air_img.setOnClickListener {
-            viewModel.imgClick("air", view)
+            treeviewModel.imgClick("air", view)
         }
         tree_img.setOnClickListener {
-            viewModel.treeclick()
+            treeviewModel.treeclick()
         }
 
         // tab 연결
@@ -92,16 +92,16 @@ class TreeActivity : AppCompatActivity() {
         }
 
         // 관찰 UI 업데이트
-        viewModel.missionLiveData.observe(this, androidx.lifecycle.Observer {
+        treeviewModel.missionLiveData.observe(this, androidx.lifecycle.Observer {
             (binding.missionRecyclerview.adapter as MissionAdapter).setData(it)
         })
-        viewModel.iconLiveData.observe(this, androidx.lifecycle.Observer {
+        treeviewModel.iconLiveData.observe(this, androidx.lifecycle.Observer {
             binding.airNum.setText("X${it.getLong("air")}")
             binding.waterNum.setText("X${it.getLong("water")}")
             binding.soilNum.setText("X${it.getLong("soil")}")
             binding.treeNum.setText("X${it.getLong("tree")}")
         })
-        viewModel.saveLiveDate.observe(this, androidx.lifecycle.Observer {
+        treeviewModel.saveLiveDate.observe(this, androidx.lifecycle.Observer {
             binding.barsoil.setProgress(it.getLong("soil")!!.toInt())
             binding.barair.setProgress(it.getLong("air")!!.toInt())
             binding.barwater.setProgress(it.getLong("water")!!.toInt())
@@ -192,6 +192,7 @@ class TreeViewModel : ViewModel() {
     val missionLiveData = MutableLiveData<List<DocumentSnapshot>>()
     val iconLiveData = MutableLiveData<DocumentSnapshot>()
     val saveLiveDate = MutableLiveData<DocumentSnapshot>()
+    val tododata1 = MutableLiveData<List<DocumentSnapshot>>()
 
     init {
         fetchData()
@@ -233,6 +234,17 @@ class TreeViewModel : ViewModel() {
                     }
                     switchdate()
                 }
+            db.collection(user.uid)
+                .document(user.uid)
+                .collection("todo")
+                .addSnapshotListener { value, e ->
+                    if (e != null) { //에러가 나면
+                        return@addSnapshotListener
+                    }
+                    if (value != null) {
+                        tododata1.value = value.documents
+                    }
+                }
         }
     }
 
@@ -246,7 +258,7 @@ class TreeViewModel : ViewModel() {
         var waternum = Random().nextInt(watermissions.size)
 
         val instance = Calendar.getInstance()
-        val date = instance.get(Calendar.DATE).toInt()
+        val date = instance.get(Calendar.DATE)
         if (date != missionLiveData.value!!.get(0).getLong("date")!!.toInt()){
             auth.currentUser?.let { user -> //currentUser가 null이 아닐 때 실행
                 db.collection(user.uid).document(user.uid).collection("treemission")
@@ -278,10 +290,46 @@ class TreeViewModel : ViewModel() {
         var isDone: Boolean = mission.getBoolean("isDone")!!
         isDone = !isDone
         var value: Int = -1
+        val instance = Calendar.getInstance()
+
         if (isDone == true) {
             value = iconLiveData.value!!.getLong(mission.getString("category")!!)!!.toInt() + 1
+
+            //val date = instance.get(Calendar.DATE)
+            var todo:Todo=Todo(0,0,0,"","")
+            when(mission.getString("category")!!){
+                "air"->{
+                    todo = Todo(instance.get(Calendar.YEAR),instance.get(Calendar.MONTH)+1,instance.get(Calendar.DATE),
+                        "공기mission",missionLiveData.value!!.get(0).getString("text")!!)
+                }
+                "soil"->{
+                    todo = Todo(instance.get(Calendar.YEAR),instance.get(Calendar.MONTH)+1,instance.get(Calendar.DATE),
+                        "토지mission",missionLiveData.value!!.get(1).getString("text")!!)
+                }
+                "water"->{
+                    todo = Todo(instance.get(Calendar.YEAR),instance.get(Calendar.MONTH)+1,instance.get(Calendar.DATE),
+                        "물mission",missionLiveData.value!!.get(2).getString("text")!!)
+                }
+            }
+            auth.currentUser?.let { user ->
+                db.collection(user.uid).document(user.uid).collection("todo").add(todo)
+            }
         } else {
             value = iconLiveData.value!!.getLong(mission.getString("category")!!)!!.toInt() - 1
+            var size = tododata1.value!!.size -1
+            for(i in 0..size){
+                var item=tododata1.value!!.get(i)
+                if (((item.getLong("year"))!!.toInt() == instance.get(Calendar.YEAR))
+                    and ((item.getLong("month"))!!.toInt() == instance.get(Calendar.MONTH)+1)
+                    and ((item.getLong("date"))!!.toInt() == instance.get(Calendar.DATE))
+                and(item.getString("category")!!.contains("mission"))
+                and(item.getString("content")==mission.getString("text"))){
+                    auth.currentUser?.let { user ->
+                        db.collection(user.uid).document(user.uid).collection("todo").document(item.id).delete()
+                    }
+                    break
+                }
+            }
         }
         auth.currentUser?.let { user -> //currentUser가 null이 아닐 때 실행
             db.collection(user.uid).document(user.uid).collection("treemission")

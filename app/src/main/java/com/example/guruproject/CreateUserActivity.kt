@@ -57,7 +57,6 @@ class CreateUserActivity : AppCompatActivity() {
 
                             // db구축
                             val db = Firebase.firestore
-                            Log.d("togg", "savedata: else")
                             var m = hashMapOf(
                                 "air" to 0,
                                 "soil" to 0,
