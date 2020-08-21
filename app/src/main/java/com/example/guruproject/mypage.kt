@@ -13,9 +13,11 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.getSystemService
+import com.google.android.gms.auth.api.Auth
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_calendar.*
 import kotlinx.android.synthetic.main.activity_mypage.*
+import java.util.concurrent.ThreadLocalRandom.current
 
 class mypage : AppCompatActivity() {
 
