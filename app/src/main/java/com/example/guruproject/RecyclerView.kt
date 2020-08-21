@@ -1,15 +1,4 @@
-//package com.example.guruproject
-//
-//import android.support.v7.app.AppCompatActivity
-//import android.os.Bundle
-//import androidx.appcompat.app.AppCompatActivity
-//
-//class RecyclerView : AppCompatActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_recycler_view)
-//    }
-//}
+
 package com.example.guruproject
 
 import android.content.Intent
@@ -19,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.common.primitives.UnsignedLongs.sort
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_calendar.*
 import kotlinx.android.synthetic.main.activity_loadview.*
 import kotlinx.android.synthetic.main.activity_recycler_view.*
@@ -80,22 +70,16 @@ class RecyclerView : AppCompatActivity() {
                     //Log.d(TAG,"$document.id}=>$document.data}")
                     profileDTO = document.toObject(Profiles::class.java)
                     ProfileListDTO.add(profileDTO)
-
+                    //db.collection("user").orderBy(Query.Direction.DESCENDING)
                     recycler_view.layoutManager =
                         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                     recycler_view.setHasFixedSize(true)
                     recycler_view.adapter = ProfileAdapter(ProfileListDTO)
-                    //  var profilelist=Profiles(userId=UserId, username = Username,postContent =  PostContent)
-                    //profiles.add(Profiles(userId=UserId, username = Username,postContent =  PostContent))
-                    // profiles.add(profilelist)
+
                 }
 
 
             }
-                //profiles.add(Profiles(UserId,Username,PostContent))
-
-                //   profiles=document.toObject(Profiles::class.java)
-                //profileList.add(profiles)
 
             }
 
@@ -129,32 +113,5 @@ class RecyclerView : AppCompatActivity() {
 //        }
 
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        if (requestCode == 200) {
-//            var ProfileListDTO: ArrayList<Profiles> = ArrayList<Profiles>()
-//            var db = FirebaseFirestore.getInstance()
-//
-//
-//            db.collection("users").whereEqualTo("userId", "User")
-//                .get()
-//                .addOnSuccessListener { result ->
-//
-//                    var profileDTO: Profiles
-//
-//                    for (document in result) {
-//                        //Log.d(TAG,"$document.id}=>$document.data}")
-//                        profileDTO = document.toObject(Profiles::class.java)
-//                        ProfileListDTO.add(profileDTO)
-//
-//                        recycler_view.layoutManager =
-//                            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//                        recycler_view.setHasFixedSize(true)
-//                        recycler_view.adapter = ProfileAdapter(ProfileListDTO)
-//
-//
-//                    }
-//
-//                }
-//            super.onActivityResult(requestCode, resultCode, data)
-//        }
+
 
