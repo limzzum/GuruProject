@@ -36,7 +36,7 @@ class ProfileAdapter(var profileList:ArrayList<Profiles>): RecyclerView.Adapter<
 
     }
     class CustomViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
-       // val profile: ImageView =itemView.findViewById<ImageView>(R.id.iv_profile)
+        //val profile: ImageView =itemView.findViewById<ImageView>(R.id.iv_profile)
         val userId: TextView =itemView.findViewById<TextView>(R.id.tv_userId)
         val username: TextView =itemView.findViewById<TextView>(R.id.tv_username)
         //val postImg: ImageView =itemView.findViewById<ImageView>(R.id.iv_postImg)
