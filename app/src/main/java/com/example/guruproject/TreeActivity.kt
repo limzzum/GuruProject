@@ -82,13 +82,10 @@ class TreeActivity : AppCompatActivity() {
             val intent = Intent(this@TreeActivity,TreeActivity::class.java)
             startActivity(intent)
         }
-
         button2.setOnClickListener {
             val intent = Intent(this@TreeActivity, CalendarActivity::class.java)
             startActivity(intent)
         }
-
-
         button3.setOnClickListener {
             val intent = Intent(this@TreeActivity, com.example.guruproject.RecyclerView::class.java)
             startActivity(intent)
