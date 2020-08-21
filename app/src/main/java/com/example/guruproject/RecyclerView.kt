@@ -46,8 +46,8 @@ class RecyclerView : AppCompatActivity() {
             startActivity(intent)
         }
         user_info.setOnClickListener {
-            val intent = Intent(this, mypage::class.java)
-            startActivityForResult(intent, 200)
+//            val intent = Intent(this, mypage::class.java)
+//            startActivityForResult(intent, 200)
         }
         upload_button.setOnClickListener {
             val intent = Intent(this, loadview::class.java)

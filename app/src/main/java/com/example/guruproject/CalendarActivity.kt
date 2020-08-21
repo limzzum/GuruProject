@@ -45,8 +45,8 @@ class CalendarActivity : AppCompatActivity() {
 
 
         my_info.setOnClickListener {
-            val intent = Intent(this@CalendarActivity, mypage::class.java)
-            startActivity(intent)
+//            val intent = Intent(this@CalendarActivity, mypage::class.java)
+//            startActivity(intent)
         }
     }
 }
