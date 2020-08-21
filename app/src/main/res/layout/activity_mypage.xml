@@ -41,6 +41,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="로그아웃"
+            android:textSize="25dp"
+            android:padding="5dp"
+            android:fontFamily="@font/mapogoldenpier"/>
+
         <TextView
             android:id="@+id/quit"
             android:layout_width="match_parent"
@@ -53,13 +63,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="설정"
-            android:textSize="25dp"
-            android:padding="5dp"
-            android:fontFamily="@font/mapogoldenpier"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="또 뭐가 있지"
             android:textSize="25dp"
             android:padding="5dp"
             android:fontFamily="@font/mapogoldenpier"/>
