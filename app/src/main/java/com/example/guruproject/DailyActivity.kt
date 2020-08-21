@@ -295,9 +295,6 @@ class DailyViewModel : ViewModel() {
                     if (e != null) { //에러가 나면
                         return@addSnapshotListener
                     }
-                    if (value != null) {
-                        missionLiveData.value = value.documents
-                    }
                 }
             db.collection(user.uid)
                 .document("treeicon")
@@ -325,6 +322,7 @@ class DailyViewModel : ViewModel() {
         auth.currentUser?.let { user ->
             db.collection(user.uid).document(user.uid).collection("todo").document(todo.id).delete()
         }
+        // mission 창과 아이콘 연동
         if(todo.getString("category")!!.contains("mission")){
             Log.d("del","mission")
             if(todo.getString("category")!!.contains("물")){
