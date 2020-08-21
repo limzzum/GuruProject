@@ -50,8 +50,10 @@
             android:layout_height="wrap_content"
             android:text="로그아웃"
             android:textSize="25dp"
-            android:padding="5dp"
-            android:fontFamily="@font/mapogoldenpier"/>
+            android:padding="10dp"
+            android:fontFamily="@font/mapogoldenpier"
+            android:textColor="#000000"
+            android:layout_margin="10dp"/>
 
         <TextView
             android:id="@+id/quit"
@@ -59,22 +61,28 @@
             android:layout_height="wrap_content"
             android:text="회원 탈퇴"
             android:textSize="25dp"
-            android:padding="5dp"
-            android:fontFamily="@font/mapogoldenpier"/>
+            android:padding="10dp"
+            android:fontFamily="@font/mapogoldenpier"
+            android:textColor="#000000"
+            android:layout_margin="10dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="설정"
             android:textSize="25dp"
-            android:padding="5dp"
-            android:fontFamily="@font/mapogoldenpier"/>
+            android:padding="10dp"
+            android:fontFamily="@font/mapogoldenpier"
+            android:textColor="#000000"
+            android:layout_margin="10dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="또 뭐가 있지"
+            android:text="설정"
             android:textSize="25dp"
-            android:padding="5dp"
-            android:fontFamily="@font/mapogoldenpier"/>
+            android:padding="10dp"
+            android:fontFamily="@font/mapogoldenpier"
+            android:textColor="#000000"
+            android:layout_margin="10dp"/>
 
     </LinearLayout>
 

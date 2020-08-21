@@ -46,6 +46,8 @@
         tools:listitem="@layout/item_mission" />
 
 
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -166,8 +168,21 @@
                 android:textSize="13dp"
                 android:textStyle="bold" />
         </LinearLayout>
-    </LinearLayout>
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="70dp">
+<!--        <ImageView-->
+<!--            android:id="@+id/maintree"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="400dp"-->
+<!--            android:src="@drawable/winter"/>-->
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/side_menu"
