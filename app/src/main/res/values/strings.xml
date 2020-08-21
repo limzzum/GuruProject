@@ -10,4 +10,26 @@
     <string name="water">물</string>
     <string name="air">공기</string>
     <string name="etc">기타</string>
+
+
+        <string-array name="airmission">
+            <item>대중교통 이용하기</item>
+            <item>에어컨 대신 선풍기 사용하기</item>
+            <item>저탄소 인증 제품 사용하기</item>
+            <item>도보/자전거 이용하기</item>
+            <item>식물에 물 주기</item>
+        </string-array>
+
+    <string-array name="watermission">
+        <item>세제 조금만 사용하기</item>
+        <item>양치 컵 사용하기</item>
+        <item>불필요할 때 물 잠그기</item>
+    </string-array>
+    <string-array name="soilmission">
+        <item>장바구니 사용하기</item>
+        <item>분리수거하기</item>
+        <item>인쇄물 대신 전자문서 사용하기</item>
+        <item>이면지 사용하기</item>
+        <item>일회용품 사용하지 않기</item>
+    </string-array>
 </resources>
