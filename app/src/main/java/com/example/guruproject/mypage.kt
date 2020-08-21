@@ -47,11 +47,22 @@ class mypage : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         button3.setOnClickListener {
             val intent = Intent(this@mypage, RecyclerView::class.java)
             startActivity(intent)
         }
+
+
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            val name = user.displayName
+            val email = user.email
+            val photoUrl = user.photoUrl
+            val emailVerified = user.isEmailVerified
+            val uid = user.uid
+        }
+
+
 
         //로그아웃
         logout.setOnClickListener {

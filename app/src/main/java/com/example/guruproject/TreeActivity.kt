@@ -425,13 +425,13 @@ fun changeBackground(saveair: Int, savesoil:Int, savewater:Int) {
     if ((saveair>=100) and (savesoil>=100) and (savewater>=100)) { //마지막
         binding.treeImageView2.setImageResource(R.drawable.tree5)
     }else if ((saveair>=75) and (savesoil>=75) and (savewater>=75)) {
-        binding.treeImageView2.setImageResource(R.drawable.tree1)
-    } else if ((saveair>=50) and (savesoil>=50) and (savewater>=50)) {
-        binding.treeImageView2.setImageResource(R.drawable.tree2)
-    } else if ((saveair>=25) and (savesoil>=25) and (savewater>=25)) {
-        binding.treeImageView2.setImageResource(R.drawable.tree3)
-    } else {
         binding.treeImageView2.setImageResource(R.drawable.tree4)
+    } else if ((saveair>=50) and (savesoil>=50) and (savewater>=50)) {
+        binding.treeImageView2.setImageResource(R.drawable.tree3)
+    } else if ((saveair>=25) and (savesoil>=25) and (savewater>=25)) {
+        binding.treeImageView2.setImageResource(R.drawable.tree2)
+    } else {
+        binding.treeImageView2.setImageResource(R.drawable.tree1)
     }
 }
 
