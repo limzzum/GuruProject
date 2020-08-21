@@ -422,7 +422,9 @@ class TreeViewModel : ViewModel() {
 
 // 바탕화면(나무사진) 변경 함수
 fun changeBackground(saveair: Int, savesoil:Int, savewater:Int) {
-    if ((saveair>=75) and (savesoil>=75) and (savewater>=75)) { //마지막
+    if ((saveair>=100) and (savesoil>=100) and (savewater>=100)) { //마지막
+        binding.treeImageView2.setImageResource(R.drawable.tree5)
+    }else if ((saveair>=75) and (savesoil>=75) and (savewater>=75)) {
         binding.treeImageView2.setImageResource(R.drawable.tree1)
     } else if ((saveair>=50) and (savesoil>=50) and (savewater>=50)) {
         binding.treeImageView2.setImageResource(R.drawable.tree2)
