@@ -102,7 +102,7 @@ Calendar 탭에서 미션 내용을 삭제하면 메인 탭에도 수행한 미�
 
 - 발표 PPT
 
-[나무한구루.pdf]([나무한구루.pdf](https://github.com/KimMinJeong05/GuruProject/files/6565982/default.pdf))
+[나무한구루.pdf](https://github.com/KimMinJeong05/GuruProject/files/6565982/default.pdf)
 
 - [Github 주소](https://github.com/KimMinJeong05/GuruProject)
 - [발표 동영상](https://youtu.be/N-vpu9vuayw)
