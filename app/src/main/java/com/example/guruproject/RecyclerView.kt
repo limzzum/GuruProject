@@ -17,7 +17,7 @@ import java.util.Arrays.sort
 import java.util.Collections.sort
 import kotlin.collections.ArrayList
 
-
+//test
 class RecyclerView : AppCompatActivity() {
 //var TAG="데이터"
 //    private lateinit var database: DatabaseReference
